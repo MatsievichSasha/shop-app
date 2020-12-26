@@ -45,8 +45,12 @@ export default function Login() {
         <div style={styles.loginForm}>
           <form onSubmit={handleSubmit}>
             <h2 className="text-center">Log In</h2>
-
-            {error && <Alert value={error}></Alert>}
+            {error && <Alert value={
+              {
+                text: error,
+                type: 'danger'
+              }
+            }></Alert>}
             <div className="form-group">
               <input
                 ref={emailRef}

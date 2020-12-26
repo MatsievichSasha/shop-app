@@ -45,8 +45,15 @@ export default function ForgotPassword() {
         <div style={styles.loginForm}>
           <form onSubmit={handleSubmit}>
             <h2 className="text-center">Password Reset</h2>
-            {error && <Alert value={error}></Alert>}
-            {message && <Alert value={message}></Alert>}
+            {error && <Alert value={{
+              text: error,
+              type: 'danger'
+            }}></Alert>}
+            {message && <Alert value={
+              {
+                text: message,
+                type: 'success'
+              }}></Alert>}
             <div className="form-group">
               <input
                 ref={emailRef}

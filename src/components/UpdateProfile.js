@@ -57,7 +57,10 @@ export default function UpdateProfile() {
         <div style={styles.loginForm}>
           <form onSubmit={handleSubmit}>
             <h2 className="text-center">Update Profile</h2>
-            {error && <Alert value={error}></Alert>}
+            {error && <Alert value={{
+              text: error,
+              type: 'danger'
+            }}></Alert>}
             <div className="form-group">
               <input
                 ref={emailRef}

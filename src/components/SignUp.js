@@ -50,7 +50,10 @@ export default function SignUp() {
             <h2 className="text-center">Sign Up</h2>
             {/* {currentUser && currentUser.email} */}
             {/* {currentUser.email} */}
-            {error && <Alert value={error}></Alert>}
+            {error && <Alert value={{
+              text: error,
+              type: 'danger'
+            }}></Alert>}
             <div className="form-group">
               <input
                 ref={emailRef}
@@ -88,9 +91,9 @@ export default function SignUp() {
             </button>
             </div>
             <div className="clearfix">
-              <label className="pull-left checkbox-inline">
+              {/*              <label className="pull-left checkbox-inline">
                 <input type="checkbox" /> Remember me
-            </label>
+            </label> */}
             </div>
           </form>
           <p className="text-center">

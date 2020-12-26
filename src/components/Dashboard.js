@@ -9,10 +9,10 @@ export default function Dashboard() {
 
   async function handleLogout() {
     setError('')
-    try{
+    try {
       await logout()
       history.push('/login')
-    }catch{
+    } catch {
       setError('Failed to log out')
     }
   }
@@ -20,7 +20,10 @@ export default function Dashboard() {
     <>
       <div>
         <h2 className="text-center">Profile</h2>
-        {error && <Alert value={error}></Alert>}
+        {error && <Alert value={{
+          text: error,
+          type: 'danger'
+        }}></Alert>}
         <strong>Email:</strong>{currentUser.email}
         <Link to="/update-profile" className="btn btn-primary w-100 mt-3">Update profile</Link>
       </div>

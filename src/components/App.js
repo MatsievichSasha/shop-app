@@ -20,7 +20,6 @@ function App() {
       <Route path ='/signup' component = {SignUp}/>
       <Route path ='/login' component = {Login}/>
       <Route path ='/forgot-password' component = {ForgotPassword}/>
-
       </Switch>
     </AuthProvider>
 
