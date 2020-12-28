@@ -8,8 +8,8 @@ export function useCards() {
 }
 
 export default function CardsProvider({ children }) {
-  function sendData(e) {
-    e.preventDefault();
+  
+  function sendData() {
     const db = dbApp.database();
     db.ref("product").push(value);
   }

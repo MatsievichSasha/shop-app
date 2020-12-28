@@ -1,19 +1,31 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useCards } from "../../contexts/CardsContext";
 
 export default function CreateCard() {
-  const descriptionRef = useRef();
   
-/*   const initialFieldValues = {
-      name: '',
-      image: '',
-      description: '',
-      price:'',
-      discount:'',
-      discountDateEnd: ''
+  const descriptionRef = useRef();
+
+  const initialFieldValues = {
+    name: '',
+    image: '',
+    description: '',
+    price: '',
+    discount: '',
+    discountDateEnd: ''
   }
-  const [product, set] */
-  const {sendData} = useCards()
+
+  const [value, setValue] = useState(initialFieldValues)
+  
+  function handleInputChange(e) {
+    
+  }
+
+  const { sendData } = useCards()
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    sendData()
+  }
 
   return (
     <div class="container">
