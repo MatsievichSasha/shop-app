@@ -1,80 +1,120 @@
-import React, {useRef} from 'react'
-import app from 'firebase'
-
-
+import React, { useRef } from "react";
+import { useCards } from "../../contexts/CardsContext";
 
 export default function CreateCard() {
-const descriptionRef = useRef()
-
-function sendData (e) {
-  e.preventDefault()
-  const db = app.database()
-  db.ref('product').push(descriptionRef.current.value)
-}
+  const descriptionRef = useRef();
+  
+/*   const initialFieldValues = {
+      name: '',
+      image: '',
+      description: '',
+      price:'',
+      discount:'',
+      discountDateEnd: ''
+  }
+  const [product, set] */
+  const {sendData} = useCards()
 
   return (
-  <div class="container">
-    <button type="button" class="close" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <section class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Добавление/Редактирование товара</h3>
-      </div>
-      <div class="panel-body">
-
-        <form onSubmit={sendData} class="form-horizontal" role="form">
-          <div class="form-group">
-            <label for="name" class="col-sm-3 control-label">Заголовок</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="name" id="name" placeholder="Название товара"/>
+    <div class="container">
+      <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <section class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Добавление/Редактирование товара</h3>
+        </div>
+        <div class="panel-body">
+          <form onSubmit={sendData} class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="name" class="col-sm-3 control-label">
+                Заголовок
+              </label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  id="name"
+                  placeholder="Название товара"
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="download" class="col-sm-3 control-label">Загрузить</label>
-            <div class="col-sm-3">
-              <label class="control-label small" for="file_img">Картинка (jpg/png):</label> <input type="file"
-                name="file_img"/>
+            <div class="form-group">
+              <label for="download" class="col-sm-3 control-label">
+                Загрузить
+              </label>
+              <div class="col-sm-3">
+                <label class="control-label small" for="file_img">
+                  Картинка (jpg/png):
+                </label>{" "}
+                <input type="file" name="file_img" />
+              </div>
             </div>
-          </div> 
 
-          <div class="form-group">
-            <label for="about" class="col-sm-3 control-label">Описание</label>
-            <div class="col-sm-9">
-              <textarea ref={descriptionRef} class="form-control"></textarea>
+            <div class="form-group">
+              <label for="about" class="col-sm-3 control-label">
+                Описание
+              </label>
+              <div class="col-sm-9">
+                <textarea ref={descriptionRef} class="form-control"></textarea>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="price" class="col-sm-3 control-label">Цена</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control" name="price" id="price"/>
+            <div class="form-group">
+              <label for="price" class="col-sm-3 control-label">
+                Цена
+              </label>
+              <div class="col-sm-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="price"
+                  id="price"
+                />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label for="discount" class="col-sm-3 control-label">Процент скидки</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control" name="discount" id="discount" placeholder="от 10% до 90%"/>
+            <div class="form-group">
+              <label for="discount" class="col-sm-3 control-label">
+                Процент скидки
+              </label>
+              <div class="col-sm-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="discount"
+                  id="discount"
+                  placeholder="от 10% до 90%"
+                />
+              </div>
             </div>
-          </div> 
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label" for="date_end">Дата окончания скидки:</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control" name="date_end" id="date_end" placeholder="dd.mm.yyyy"/>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="date_end">
+                Дата окончания скидки:
+              </label>
+              <div class="col-sm-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="date_end"
+                  id="date_end"
+                  placeholder="dd.mm.yyyy"
+                />
+              </div>
             </div>
-          </div> 
 
-          <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-              <button type="submit" class="btn btn-primary">Сохранить</button>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-primary">
+                  Сохранить
+                </button>
+              </div>
             </div>
-          </div>
-        </form>
-
-      </div>
-    </section>
-  </div> 
-  )
+          </form>
+        </div>
+      </section>
+    </div>
+  );
 }
