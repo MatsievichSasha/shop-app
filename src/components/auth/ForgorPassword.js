@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import Alert from '../components/Alert'
+import { useAuth } from '../../contexts/AuthContext'
+import Alert from '../Alert'
 import { Link } from 'react-router-dom'
 
 let styles = {
