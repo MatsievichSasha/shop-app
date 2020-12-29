@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import dbApp from "firebase";
 
 const CardsContext = React.createContext();
@@ -9,8 +9,22 @@ export function useCards() {
 
 export default function CardsProvider({ children }) {
   
+  const [prodactObjects, setprodactObjects] = useState({})
+  const db = dbApp.database();
+  
+  useEffect(()=>{
+    db.child('products').on('value', snapshot => {
+      if(snapshot.val() !=null){
+        setprodactObjects({
+          ...snapshot.val()
+        })
+      }
+    })
+
+  })
+
   function sendData(values) {
-    const db = dbApp.database();
+   /*  const db = dbApp.database(); */
     
     db.ref().child("product").push(
       values,
