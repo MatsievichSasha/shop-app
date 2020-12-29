@@ -8,35 +8,36 @@ export function useCards() {
 }
 
 export default function CardsProvider({ children }) {
-  
-  const [prodactObjects, setprodactObjects] = useState({})
+  const [prodactObjects, setprodactObjects] = useState({});
   const db = dbApp.database();
-  
-  useEffect(()=>{
-    db.child('products').on('value', snapshot => {
-      if(snapshot.val() !=null){
-        setprodactObjects({
-          ...snapshot.val()
-        })
-      }
-    })
 
-  })
+  useEffect(() => {
+    db.ref()
+      .child("product")
+      .on("value", (snapshot) => {
+        if (snapshot.val() != null) {
+          setprodactObjects({
+            ...snapshot.val(),
+          });
+        }
+      });
+  }, []);
+
+  console.log(JSON.stringify(prodactObjects));
 
   function sendData(values) {
-   /*  const db = dbApp.database(); */
-    
-    db.ref().child("product").push(
-      values,
-      err => {
-        if(err){
-          console.log(err)
+    db.ref()
+      .child("product")
+      .push(values, (err) => {
+        if (err) {
+          console.log(err);
         }
       });
   }
 
   const value = {
     sendData,
+    prodactObjects,
   };
 
   return (

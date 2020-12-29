@@ -1,17 +1,20 @@
 import React, { useRef, useState } from "react";
 import { useCards } from "../../contexts/CardsContext";
+import dbApp from 'firebase'
 
 export default function CreateCard() {
   const descriptionRef = useRef();
 
   const initialFieldValues = {
     name: "",
-    image: "",
+    urlImg: "",
     description: "",
     price: "",
     discount: "",
     discountDateEnd: "",
   };
+
+  const [hasImage, setHasImage] = useState(false)
 
   const [values, setValue] = useState(initialFieldValues);
   console.log(values);
@@ -21,6 +24,21 @@ export default function CreateCard() {
       ...values,
       [name]: value,
     });
+  }
+
+  async function onFileChange(e){
+    e.preventDefault();
+    const file = e.target.files[0]
+    const storageRef = dbApp.storage().ref()
+    const fileRef = storageRef.child(file.name) //create ref for file
+    await fileRef.put(file)
+      .then(()=>console.log('Uploaded file'))
+      setValue({
+        ...values,
+        urlImg: await fileRef.getDownloadURL(),
+      }); 
+      setHasImage(prev=>!prev)
+      
   }
 
   const { sendData } = useCards();
@@ -63,10 +81,17 @@ export default function CreateCard() {
 
             <div className="form-group">
               <label className="control-label col-sm-3" htmlFor="file_img">
-                Картинка (jpg/png):
+                Изображение (jpg):
               </label>
-              <input type="file" id="file_img" name="file_img" />
+              <input
+                onChange={onFileChange}
+                type="file"
+                id="file_img"
+                name="file_img"
+              />
             </div>
+            { hasImage && <div><img src={values.urlImg}/></div>
+            }
             <div className="form-group">
               <label htmlFor="description" className="col-sm-3 control-label">
                 Описание
@@ -113,7 +138,10 @@ export default function CreateCard() {
             </div>
 
             <div className="form-group">
-              <label className="col-sm-3 control-label" htmlFor="discountDateEnd">
+              <label
+                className="col-sm-3 control-label"
+                htmlFor="discountDateEnd"
+              >
                 Дата окончания скидки:
               </label>
               <div className="col-sm-3">
