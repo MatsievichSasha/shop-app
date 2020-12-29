@@ -1,5 +1,5 @@
-import firebase from "firebase/app"
-import "firebase/auth"
+import firebase from "firebase/app";
+import "firebase/auth";
 
 const dbApp = firebase.initializeApp({
   apiKey: "AIzaSyB8rziyfFjaTGMgxTTHA25AYFQ196shCvA",
@@ -8,9 +8,9 @@ const dbApp = firebase.initializeApp({
   projectId: "test-shop-01",
   storageBucket: "test-shop-01.appspot.com",
   messagingSenderId: "729583535519",
-  appId: "1:729583535519:web:10828ad0bb4cb0120469aa"
+  appId: "1:729583535519:web:10828ad0bb4cb0120469aa",
 });
 
-export const auth = dbApp.auth()
+export const auth = dbApp.auth();
 
-export default dbApp
+export default dbApp;

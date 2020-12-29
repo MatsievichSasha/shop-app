@@ -2,50 +2,58 @@ import React, { useRef, useState } from "react";
 import { useCards } from "../../contexts/CardsContext";
 
 export default function CreateCard() {
-  
   const descriptionRef = useRef();
 
   const initialFieldValues = {
-    name: '',
-    image: '',
-    description: '',
-    price: '',
-    discount: '',
-    discountDateEnd: ''
+    name: "",
+    image: "",
+    description: "",
+    price: "",
+    discount: "",
+    discountDateEnd: "",
+  };
+
+  const [values, setValue] = useState(initialFieldValues);
+  console.log(values);
+
+  function handleInputChange({ target: { name, value } }) {
+    setValue({
+      ...values,
+      [name]: value,
+    });
   }
 
-  const [value, setValue] = useState(initialFieldValues)
-  
-  function handleInputChange(e) {
-    
-  }
+  const { sendData } = useCards();
 
-  const { sendData } = useCards()
-
-  function handleSubmit(e) {
+  function handleFormSubmit(e) {
     e.preventDefault();
-    sendData()
+    sendData(values);
   }
-
+  console.log(JSON.stringify(values));
   return (
-    <div class="container">
-      <button type="button" class="close" aria-label="Close">
+    <div className="container">
+      <button type="button" className="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
-      <section class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Добавление/Редактирование товара</h3>
+      <section className="panel panel-default">
+        <div className="panel-heading">
+          <h3 className="panel-title">Добавление/Редактирование товара</h3>
         </div>
-        <div class="panel-body">
-          <form onSubmit={sendData} class="form-horizontal" role="form">
-            <div class="form-group">
-              <label for="name" class="col-sm-3 control-label">
+        <div className="panel-body">
+          <form
+            onSubmit={handleFormSubmit}
+            className="form-horizontal"
+            role="form"
+          >
+            <div className="form-group">
+              <label htmlFor="name" className="col-sm-3 control-label">
                 Заголовок
               </label>
-              <div class="col-sm-9">
+              <div className="col-sm-9">
                 <input
+                  onChange={handleInputChange}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   name="name"
                   id="name"
                   placeholder="Название товара"
@@ -53,48 +61,50 @@ export default function CreateCard() {
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="download" class="col-sm-3 control-label">
-                Загрузить
+            <div className="form-group">
+              <label className="control-label col-sm-3" htmlFor="file_img">
+                Картинка (jpg/png):
               </label>
-              <div class="col-sm-3">
-                <label class="control-label small" for="file_img">
-                  Картинка (jpg/png):
-                </label>{" "}
-                <input type="file" name="file_img" />
-              </div>
+              <input type="file" id="file_img" name="file_img" />
             </div>
-
-            <div class="form-group">
-              <label for="about" class="col-sm-3 control-label">
+            <div className="form-group">
+              <label htmlFor="description" className="col-sm-3 control-label">
                 Описание
               </label>
-              <div class="col-sm-9">
-                <textarea ref={descriptionRef} class="form-control"></textarea>
+              <div className="col-sm-9">
+                <textarea
+                  onChange={handleInputChange}
+                  ref={descriptionRef}
+                  id="description"
+                  name="description"
+                  className="form-control"
+                ></textarea>
               </div>
             </div>
-            <div class="form-group">
-              <label for="price" class="col-sm-3 control-label">
+            <div className="form-group">
+              <label htmlFor="price" className="col-sm-3 control-label">
                 Цена
               </label>
-              <div class="col-sm-3">
+              <div className="col-sm-3">
                 <input
+                  onChange={handleInputChange}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   name="price"
                   id="price"
                 />
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="discount" class="col-sm-3 control-label">
+            <div className="form-group">
+              <label htmlFor="discount" className="col-sm-3 control-label">
                 Процент скидки
               </label>
-              <div class="col-sm-3">
+              <div className="col-sm-3">
                 <input
+                  onChange={handleInputChange}
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   name="discount"
                   id="discount"
                   placeholder="от 10% до 90%"
@@ -102,24 +112,25 @@ export default function CreateCard() {
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="col-sm-3 control-label" for="date_end">
+            <div className="form-group">
+              <label className="col-sm-3 control-label" htmlFor="discountDateEnd">
                 Дата окончания скидки:
               </label>
-              <div class="col-sm-3">
+              <div className="col-sm-3">
                 <input
+                  onChange={handleInputChange}
                   type="text"
-                  class="form-control"
-                  name="date_end"
-                  id="date_end"
+                  className="form-control"
+                  name="discountDateEnd"
+                  id="discountDateEnd"
                   placeholder="dd.mm.yyyy"
                 />
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-9">
-                <button type="submit" class="btn btn-primary">
+            <div className="form-group">
+              <div className="col-sm-offset-3 col-sm-9">
+                <button type="submit" className="btn btn-primary">
                   Сохранить
                 </button>
               </div>
@@ -127,6 +138,7 @@ export default function CreateCard() {
           </form>
         </div>
       </section>
+      <p>{JSON.stringify(values)}</p>
     </div>
   );
 }

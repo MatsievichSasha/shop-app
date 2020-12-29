@@ -46,9 +46,6 @@ let styles = {
 }
 
 export default function Card() {
-
-
-  
   return (
     <li style={styles.li}>
       <article style={styles.wrapper} className="wrapper">

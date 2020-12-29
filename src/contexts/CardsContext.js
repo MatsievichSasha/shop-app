@@ -9,9 +9,16 @@ export function useCards() {
 
 export default function CardsProvider({ children }) {
   
-  function sendData() {
+  function sendData(values) {
     const db = dbApp.database();
-    db.ref("product").push(value);
+    
+    db.ref().child("product").push(
+      values,
+      err => {
+        if(err){
+          console.log(err)
+        }
+      });
   }
 
   const value = {
