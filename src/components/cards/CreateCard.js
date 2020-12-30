@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useCards } from "../../contexts/CardsContext";
-import dbApp from 'firebase'
+import dbApp from "firebase";
+import Alert from '../Alert'
 
 export default function CreateCard() {
-  const descriptionRef = useRef();
-
   const initialFieldValues = {
     name: "",
     urlImg: "",
@@ -14,10 +13,13 @@ export default function CreateCard() {
     discountDateEnd: "",
   };
 
-  const [hasImage, setHasImage] = useState(false)
-
   const [values, setValue] = useState(initialFieldValues);
-  console.log(values);
+  const [hasImage, setHasImage] = useState(false);
+  const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+  
+ 
+  /*  console.log(values); */
 
   function handleInputChange({ target: { name, value } }) {
     setValue({
@@ -26,19 +28,32 @@ export default function CreateCard() {
     });
   }
 
-  async function onFileChange(e){
+  function onFileChange(e) {
+    setHasImage(false);
     e.preventDefault();
-    const file = e.target.files[0]
-    const storageRef = dbApp.storage().ref()
-    const fileRef = storageRef.child(file.name) //create ref for file
-    await fileRef.put(file)
-      .then(()=>console.log('Uploaded file'))
-      setValue({
-        ...values,
-        urlImg: await fileRef.getDownloadURL(),
-      }); 
-      setHasImage(prev=>!prev)
-      
+    const file = e.target.files[0];
+    const storageRef = dbApp.storage().ref();
+    const fileRef = storageRef.child(`images/${file.name}`).put(file); //create ref for file
+
+    fileRef.on(
+      "state_changed",
+      function (snapshot) {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      function (error) {
+        console.log(error);
+      },
+      function () {
+        fileRef.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          setValue({
+            ...values,
+            urlImg: downloadURL,
+          });
+          setHasImage(true);
+        });
+      }
+    );
   }
 
   const { sendData } = useCards();
@@ -47,12 +62,13 @@ export default function CreateCard() {
     e.preventDefault();
     sendData(values);
   }
-  console.log(JSON.stringify(values));
+
+  /* console.log(JSON.stringify(values)); */
   return (
     <div className="container">
-      <button type="button" className="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+{/*       <button type="button" className="close" aria-label="Close">
+        <span onClick={handleClose} aria-hidden="true">&times;</span>
+      </button> */}
       <section className="panel panel-default">
         <div className="panel-heading">
           <h3 className="panel-title">Добавление/Редактирование товара</h3>
@@ -90,8 +106,11 @@ export default function CreateCard() {
                 name="file_img"
               />
             </div>
-            { hasImage && <div><img src={values.urlImg}/></div>
-            }
+            {hasImage && (
+              <div>
+                <img src={values.urlImg} />
+              </div>
+            )}
             <div className="form-group">
               <label htmlFor="description" className="col-sm-3 control-label">
                 Описание
@@ -99,7 +118,6 @@ export default function CreateCard() {
               <div className="col-sm-9">
                 <textarea
                   onChange={handleInputChange}
-                  ref={descriptionRef}
                   id="description"
                   name="description"
                   className="form-control"
@@ -166,7 +184,7 @@ export default function CreateCard() {
           </form>
         </div>
       </section>
-      <p>{JSON.stringify(values)}</p>
+      {/*       <p>{JSON.stringify(values)}</p> */}
     </div>
   );
 }

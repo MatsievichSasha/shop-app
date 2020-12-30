@@ -13,7 +13,7 @@ let styles = {
   img: {
     width: '100%',
     height: '160px',
-    objectFit: 'cover',
+    objectFit: 'contein',
     display: 'block',
     objectPosition: '50% 0'
   },
