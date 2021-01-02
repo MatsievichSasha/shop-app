@@ -37,13 +37,17 @@ export default function CardsProvider({ children }) {
 
   function removeCard(key) {
     db.ref("product" +'/'+ key).remove()
+  }
+
+  function setCardFB(object, key) {
     
   }
 
   const value = {
     sendData,
     prodactObjects,
-    removeCard
+    removeCard,
+
   };
 
   return (

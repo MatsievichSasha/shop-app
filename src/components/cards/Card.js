@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCards } from "../../contexts/CardsContext";
+import { Link } from "react-router-dom";
 
 let styles = {
   li: {
@@ -85,15 +86,20 @@ export default function Card({ object, id }) {
       </article>
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
-          <button
+          <Link
+            to={{
+              pathname: "/edit-Card",
+              object: object,
+              id: id
+            }}
             className="btn btn-success btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
             data-placement="top"
             title="Edit"
           >
-            <FontAwesomeIcon /* onClick={handelEdit} */ icon={faEdit} />
-          </button>
+            <FontAwesomeIcon icon={faEdit} />
+          </Link>
         </li>
         <li className="list-inline-item">
           <button
