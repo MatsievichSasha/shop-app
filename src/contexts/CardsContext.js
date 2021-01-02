@@ -8,7 +8,7 @@ export function useCards() {
 }
 
 export default function CardsProvider({ children }) {
-  const [prodactObjects, setprodactObjects] = useState({});
+  const [prodactObjects, setProdactObjects] = useState({});
   const db = dbApp.database();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function CardsProvider({ children }) {
       .child("product")
       .on("value", (snapshot) => {
         if (snapshot.val() != null) {
-          setprodactObjects({
+          setProdactObjects({
             ...snapshot.val(),
           });
         }
@@ -33,6 +33,10 @@ export default function CardsProvider({ children }) {
           console.log(err);
         }
       });
+  }
+
+  function removeCard(params) {
+    
   }
 
   const value = {
