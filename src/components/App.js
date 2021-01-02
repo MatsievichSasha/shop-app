@@ -11,11 +11,8 @@ import Profile from "./auth/Profile";
 import Cards from "./cards/Cards";
 import CreateCard from "../components/cards/CreateCard";
 import CardsProvider from "../contexts/CardsContext";
-import { Navbar } from "./Navbar";
-
 
 function App() {
-
   return (
     <Router>
       <AuthProvider>

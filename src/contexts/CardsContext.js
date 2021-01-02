@@ -35,7 +35,7 @@ export default function CardsProvider({ children }) {
       });
   }
 
-  function removeCard(params) {
+  function removeCard(key) {
     
   }
 
