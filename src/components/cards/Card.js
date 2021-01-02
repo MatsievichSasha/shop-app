@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useCards } from "../../contexts/CardsContext";
 
 let styles = {
   li: {
@@ -47,9 +48,15 @@ let styles = {
   },
 };
 
-export default function Card({ object }) {
+export default function Card({ object, id }) {
+  const { removeCard } = useCards()
+
+  function handelRemove() {
+    return removeCard(id);
+  }
+
   return (
-    <li style={styles.li}>
+    <li className="card" style={styles.li}>
       <article style={styles.wrapper} className="wrapper">
         <a className="img__container">
           <img style={styles.img} src={object.urlImg} alt="" />
@@ -76,27 +83,27 @@ export default function Card({ object }) {
           {object.description}
         </div>
       </article>
-      <ul class="list-inline m-0">
-        <li class="list-inline-item">
+      <ul className="edit list-inline m-0">
+        <li className="list-inline-item">
           <button
-            class="btn btn-success btn-sm rounded-0"
+            className="btn btn-success btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
             data-placement="top"
             title="Edit"
           >
-            <FontAwesomeIcon icon={faEdit} />
+            <FontAwesomeIcon /* onClick={handelEdit} */ icon={faEdit} />
           </button>
         </li>
-        <li class="list-inline-item">
+        <li className="list-inline-item">
           <button
-            class="btn btn-danger btn-sm rounded-0"
+            className="btn btn-danger btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <FontAwesomeIcon onClick={handelRemove} icon={faTrash} />
           </button>
         </li>
       </ul>

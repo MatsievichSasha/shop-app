@@ -16,11 +16,15 @@ export default function Cards() {
 
   return (
     <>
-    <ul style={styles.ul}>
-      {Object.keys(prodactObjects).map((id) => {
-        return <Card object={prodactObjects[id]} key={id}></Card>;
-      })}
-    </ul>
+      <ul style={styles.ul}>
+        {Object.keys(prodactObjects).map((id) => {
+          return <Card
+            object={prodactObjects[id]}
+            key={id}
+            id={id}>
+          </Card>;
+        })}
+      </ul>
     </>
   );
 }

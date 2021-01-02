@@ -36,12 +36,14 @@ export default function CardsProvider({ children }) {
   }
 
   function removeCard(key) {
+    db.ref("product" +'/'+ key).remove()
     
   }
 
   const value = {
     sendData,
     prodactObjects,
+    removeCard
   };
 
   return (

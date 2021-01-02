@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const Navbar = () => (
   <nav>
     <div className="nav nav-tabs" id="nav-tab" role="tablist">
-      <Link exact to="/" className="nav-link" >
+      <Link to="/" className="nav-link" >
         Все товары
       </Link>
       <Link to="/create-card" className="nav-link" >

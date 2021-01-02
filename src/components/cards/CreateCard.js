@@ -18,6 +18,8 @@ export default function CreateCard() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  const { sendData } = useCards();
+
   function handleInputChange({ target: { name, value } }) {
     setValue({
       ...values,
@@ -53,7 +55,7 @@ export default function CreateCard() {
     );
   }
 
-  const { sendData } = useCards();
+
 
   function handleFormSubmit(e) {
     e.preventDefault();
