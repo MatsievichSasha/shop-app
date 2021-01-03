@@ -23,8 +23,6 @@ export default function CardsProvider({ children }) {
       });
   }, []);
 
-  console.log(JSON.stringify(prodactObjects));
-
   function sendData(values) {
     db.ref()
       .child("product")
@@ -36,18 +34,18 @@ export default function CardsProvider({ children }) {
   }
 
   function removeCard(key) {
-    db.ref("product" +'/'+ key).remove()
+    db.ref("product" + '/' + key).remove()
   }
 
   function setCardFB(object, key) {
-    
+    db.ref("product" + '/' + key).update(object)
   }
 
   const value = {
     sendData,
     prodactObjects,
     removeCard,
-
+    setCardFB
   };
 
   return (

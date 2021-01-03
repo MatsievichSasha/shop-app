@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useCards } from "../../contexts/CardsContext";
 import dbApp from "firebase";
 import Alert from "../Alert";
+import { useHistory } from 'react-router-dom'
 
 export default function CreateCard() {
   const initialFieldValues = {
@@ -17,7 +18,7 @@ export default function CreateCard() {
   const [hasImage, setHasImage] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
+  const history = useHistory()
   const { sendData } = useCards();
 
   function handleInputChange({ target: { name, value } }) {
@@ -57,9 +58,15 @@ export default function CreateCard() {
 
 
 
-  function handleFormSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    sendData(values);
+    try {
+      await sendData(values);
+      history.push('/')
+    } catch {
+      setError('Failed to log in')
+    }
+
   }
 
   return (
