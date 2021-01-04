@@ -5,16 +5,6 @@ import Alert from "../Alert";
 import { useHistory } from 'react-router-dom'
 
 export default function EditCard(props) {
-  /*  console.log(props.location.id, props.location.object) */
-
-  /*   const initialFieldValues = {
-      name: "",
-      urlImg: "",
-      description: "",
-      price: "",
-      discount: "",
-      discountDateEnd: "",
-    }; */
 
   const history = useHistory()
   console.log(props.location.object)
@@ -22,9 +12,6 @@ export default function EditCard(props) {
     history.push('/')
   }
 
-  /*   if (true) {
-      history.push('/')
-    } */
   const [values, setValue] = useState(props.location.object);
 
   const [hasImage, setHasImage] = useState(false);
@@ -40,7 +27,6 @@ export default function EditCard(props) {
       setHasImage(true);
     }
   })
-
 
   function handleInputChange({ target: { name, value } }) {
     setValue({
@@ -92,7 +78,7 @@ export default function EditCard(props) {
       <div className="container">
         <section className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title">Добавление/Редактирование товара</h3>
+            <h3 className="panel-title">Редактирование товара</h3>
           </div>
           <div className="panel-body">
             <form

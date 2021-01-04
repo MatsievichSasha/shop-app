@@ -3,6 +3,7 @@ import { useCards } from "../../contexts/CardsContext";
 import dbApp from "firebase";
 import Alert from "../Alert";
 import { useHistory } from 'react-router-dom'
+import { checkImage } from '../checkForm'
 
 export default function CreateCard() {
   const initialFieldValues = {
@@ -29,31 +30,38 @@ export default function CreateCard() {
   }
 
   function onFileChange(e) {
+    setError("")
     setHasImage(false);
     e.preventDefault();
     const file = e.target.files[0];
-    const storageRef = dbApp.storage().ref();
-    const fileRef = storageRef.child(`images/${file.name}`).put(file); //create ref for file
+    if (checkImage(file)) {
+      const storageRef = dbApp.storage().ref();
+      const fileRef = storageRef.child(`images/${file.name}`).put(file); //create ref for file
 
-    fileRef.on(
-      "state_changed",
-      function (snapshot) {
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-      },
-      function (error) {
-        console.log(error);
-      },
-      function () {
-        fileRef.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          setValue({
-            ...values,
-            urlImg: downloadURL,
+      fileRef.on(
+        "state_changed",
+        function (snapshot) {
+          let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        function (error) {
+          console.log(error);
+        },
+        function () {
+          fileRef.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+            setValue({
+              ...values,
+              urlImg: downloadURL,
+            });
+            setHasImage(true);
           });
-          setHasImage(true);
-        });
-      }
-    );
+        }
+      );
+    } else {
+      e.target.value = ""
+      setError("Sorry, this image does not match the size or type we wanted. Choose another file.")
+    }
+
   }
 
 
@@ -94,21 +102,32 @@ export default function CreateCard() {
                     name="name"
                     id="name"
                     placeholder="Название товара"
+                    required
+                    minlength="20" maxlength="60"
                   />
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="control-label col-sm-3" htmlFor="file_img">
-                  Изображение (jpg):
+                  Изображение (min 200px*200px, max 4000px*4000px, .jpg, .jpeg, .png):
                 </label>
                 <input
                   onChange={onFileChange}
                   type="file"
                   id="file_img"
                   name="file_img"
+                  required
+                  accept=".jpg, .jpeg, .png"
+                  multiple
                 />
               </div>
+              {error && <Alert value={
+                {
+                  text: error,
+                  type: 'danger'
+                }
+              }></Alert>}
               {hasImage && (
                 <div>
                   <img src={values.urlImg} />
@@ -124,32 +143,36 @@ export default function CreateCard() {
                     id="description"
                     name="description"
                     className="form-control"
+                    maxlength="200"
                   ></textarea>
                 </div>
               </div>
               <div className="form-group">
                 <label htmlFor="price" className="col-sm-3 control-label">
-                  Цена
+                  Цена, $
                 </label>
                 <div className="col-sm-3">
                   <input
                     onChange={handleInputChange}
-                    type="text"
+                    type="number"
+                    min="0" max="99999999.99"
                     className="form-control"
                     name="price"
                     id="price"
+                    required
                   />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="discount" className="col-sm-3 control-label">
-                  Процент скидки
+                  Процент скидки, %
                 </label>
                 <div className="col-sm-3">
                   <input
                     onChange={handleInputChange}
-                    type="text"
+                    type="number"
+                    min="0" max="90"
                     className="form-control"
                     name="discount"
                     id="discount"
