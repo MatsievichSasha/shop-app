@@ -1,25 +1,46 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useCards } from "../../contexts/CardsContext";
 import dbApp from "firebase";
 import Alert from "../Alert";
 import { useHistory } from 'react-router-dom'
 
-export default function CreateCard() {
-  const initialFieldValues = {
-    name: "",
-    urlImg: "",
-    description: "",
-    price: "",
-    discount: "",
-    discountDateEnd: "",
-  };
+export default function EditCard(props) {
+  /*  console.log(props.location.id, props.location.object) */
 
-  const [values, setValue] = useState(initialFieldValues);
+  /*   const initialFieldValues = {
+      name: "",
+      urlImg: "",
+      description: "",
+      price: "",
+      discount: "",
+      discountDateEnd: "",
+    }; */
+
+  const history = useHistory()
+  console.log(props.location.object)
+  if (props.location.object === undefined) {
+    history.push('/')
+  }
+
+  /*   if (true) {
+      history.push('/')
+    } */
+  const [values, setValue] = useState(props.location.object);
+
   const [hasImage, setHasImage] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const history = useHistory()
-  const { sendData } = useCards();
+
+  const image = useRef(values.urlImg)
+  
+  const {setCardFB} = useCards()
+
+  useEffect(() => {
+    if (image) {
+      setHasImage(true);
+    }
+  })
+
 
   function handleInputChange({ target: { name, value } }) {
     setValue({
@@ -56,25 +77,22 @@ export default function CreateCard() {
     );
   }
 
-
-
-  async function handleFormSubmit(e) {
-    e.preventDefault();
-    try {
-      await sendData(values);
-      history.push('/')
-    } catch {
-      setError('Failed to log in')
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      try{
+        await setCardFB(values, props.location.id)
+        history.push('/')
+      } catch{
+        setError('Failed to log in')
+      }
     }
-
-  }
 
   return (
     <>
       <div className="container">
         <section className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title">Добавление товара</h3>
+            <h3 className="panel-title">Добавление/Редактирование товара</h3>
           </div>
           <div className="panel-body">
             <form
@@ -89,6 +107,7 @@ export default function CreateCard() {
                 <div className="col-sm-9">
                   <input
                     onChange={handleInputChange}
+                    value={values.name}
                     type="text"
                     className="form-control"
                     name="name"
@@ -121,6 +140,7 @@ export default function CreateCard() {
                 <div className="col-sm-9">
                   <textarea
                     onChange={handleInputChange}
+                    value={values.description}
                     id="description"
                     name="description"
                     className="form-control"
@@ -134,6 +154,7 @@ export default function CreateCard() {
                 <div className="col-sm-3">
                   <input
                     onChange={handleInputChange}
+                    value={values.price}
                     type="text"
                     className="form-control"
                     name="price"
@@ -149,6 +170,7 @@ export default function CreateCard() {
                 <div className="col-sm-3">
                   <input
                     onChange={handleInputChange}
+                    value={values.discount}
                     type="text"
                     className="form-control"
                     name="discount"
@@ -168,6 +190,7 @@ export default function CreateCard() {
                 <div className="col-sm-3">
                   <input
                     onChange={handleInputChange}
+                    value={values.discountDateEnd}
                     type="text"
                     className="form-control"
                     name="discountDateEnd"
