@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCards } from "../../contexts/CardsContext";
@@ -51,35 +51,29 @@ let styles = {
 
 export default function Card({ object, id }) {
   const { removeCard } = useCards();
+  const [discountPrice, setDiscountPrice] = useState("");
+  const [discountDateEnd, setDiscountDateEnd] = useState("");
 
   function handelRemove() {
     return removeCard(id);
   }
 
-  /*  const initialFieldValues = {
-    name: "",
-    urlImg: "",
-    description: "",
-    price: "",
-    discount: "",
-    discountDateEnd: "",
-  };
- */
+  useEffect(() => {
+    priceCreat(object);
+  }, []);
 
-  /* function priceCreat(object){
-   
-   let msInDay = 86400000
-  if (object.discount){
-    let now = new Date()
-    let discountDateEnd = new Date(object.discountDateEnd)
-    let daysToEndDiscount = Math.round((discountDateEnd - now)/msInDay)
-    let oldPrice = object.price
-    let currentPrice = oldPrice * 
-    if (discountDateEnd > now){
+  function priceCreat(object) {
+    let msInDay = 86400000;
+    if (object.discount) {
+      let now = new Date();
+      let discountDateEnd = new Date(object.discountDateEnd);
+
+      if (discountDateEnd > now) {
+        setDiscountDateEnd(Math.round((discountDateEnd - now) / msInDay));
+        setDiscountPrice(object.price - (object.price * object.discount) / 100);
+      }
     }
   }
- }
- */
 
   return (
     <li className="card" style={styles.li}>
@@ -90,19 +84,17 @@ export default function Card({ object, id }) {
         <div className="name">{object.name}</div>
         <div styles={styles.prices}>
           <div style={styles.price_old} className="price_old">
-            {object.price}
-            {/* 2&nbsp;599&nbsp;₴ */}
+            {discountPrice ? `${object.price}$` : null}
           </div>
           <div style={styles.price_current} className="price_current">
             <span
               style={styles.price_current_value}
               className="price_current_value"
             >
-              {object.discount} {/* 2&nbsp;599&nbsp;₴ */}
+              {discountPrice ? `${discountPrice}$` : `${object.price}$`}
             </span>
             <span className="price_valid"></span>
-            {object.discountDateEnd}
-            {/* valid 15 days */}
+            {discountDateEnd ? `Цена действительна ${discountDateEnd}д.` : null}
           </div>
         </div>
         <div style={styles.description} className="description">

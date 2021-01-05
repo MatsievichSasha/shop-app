@@ -42,8 +42,7 @@ export default function CreateCard() {
   const ImageMinSize = 200;
 
   useEffect(() => {
-    console.log(inputErrors.urlImg);
-    if (inputErrors.name || inputErrors.price) {
+    if (inputErrors.name || inputErrors.price || inputErrors.discountDateEnd) {
       setFormValid(false);
     } else {
       setFormValid(true);
