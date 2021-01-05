@@ -50,11 +50,36 @@ let styles = {
 };
 
 export default function Card({ object, id }) {
-  const { removeCard } = useCards()
+  const { removeCard } = useCards();
 
   function handelRemove() {
     return removeCard(id);
   }
+
+  /*  const initialFieldValues = {
+    name: "",
+    urlImg: "",
+    description: "",
+    price: "",
+    discount: "",
+    discountDateEnd: "",
+  };
+ */
+
+  /* function priceCreat(object){
+   
+   let msInDay = 86400000
+  if (object.discount){
+    let now = new Date()
+    let discountDateEnd = new Date(object.discountDateEnd)
+    let daysToEndDiscount = Math.round((discountDateEnd - now)/msInDay)
+    let oldPrice = object.price
+    let currentPrice = oldPrice * 
+    if (discountDateEnd > now){
+    }
+  }
+ }
+ */
 
   return (
     <li className="card" style={styles.li}>
@@ -90,7 +115,7 @@ export default function Card({ object, id }) {
             to={{
               pathname: "/edit-Card",
               object: object,
-              id: id
+              id: id,
             }}
             className="btn btn-success btn-sm rounded-0"
             type="button"
