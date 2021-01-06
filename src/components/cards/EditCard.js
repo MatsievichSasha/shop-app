@@ -51,16 +51,27 @@ export default function EditCard(props) {
     }
   });
 
-  function handleInputChange(e) {
-    let { name, value } = e.target;
-    let number = value.trim();
+  useEffect(() => {
+    for (let key in values) {
+      console.log(values[key], key);
+      checkForm(values[key], key);
+    }
+  }, []);
+
+  function handleInputChange({ target: { value, name } }) {
     setValue({ ...values, [name]: value });
+    checkForm(value, name);
+  }
+
+  function checkForm(value, name) {
+    let number = value.trim();
     if (name === "name") {
       if (value.length < 20 || value.length > 60) {
         setInputErrors({
           ...inputErrors,
           [name]: "минимум 20, максимум 60 символов",
         });
+        console.log("1");
         if (!value) {
           setInputErrors({
             ...inputErrors,
@@ -402,6 +413,7 @@ export default function EditCard(props) {
                     </div>
                   )}
                   <input
+                    value={values.discountDateEnd}
                     onChange={handleInputChange}
                     onBlur={blurHandleValidation}
                     type="date"

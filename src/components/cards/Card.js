@@ -70,7 +70,9 @@ export default function Card({ object, id }) {
 
       if (discountDateEnd > now) {
         setDiscountDateEnd(Math.round((discountDateEnd - now) / msInDay));
-        setDiscountPrice(object.price - (object.price * object.discount) / 100);
+        setDiscountPrice(
+          Math.floor(object.price * 100 - object.price * object.discount) / 100
+        );
       }
     }
   }

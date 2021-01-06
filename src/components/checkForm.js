@@ -1,142 +1,91 @@
-"use strict";
-{
-  function checkLetters(name) {
-    let regexp = /^\d+(?:[.,]\d\d)*$/gm;
-    return regexp.test(name);
-  }
-
-  function checkNumbers(value, min, max) {
-    let regexp = /^\d+(?:[.]\d\d)*$/gm;
-    let number = value.trim();
-    if (number && isFinite(number)) {
-      if (min === undefined || max === undefined) {
-        return true;
-      } else if (+number >= min && +number <= max && regexp.test(number)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else return false;
-  }
-
-  function checkPrice(value, min, max) {
-    let regexp = /^\d+(?:[.]\d\d)*$/gm;
-    let number = value.trim();
-    if (number && isFinite(number)) {
-      if (min === undefined || max === undefined) {
-        return true;
-      } else if (+number >= min && +number <= max && regexp.test(number)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else return false;
-  }
-
-  function checkDiscount(value, min, max) {
-    let regexp = /^\d+(?:)*$/gm;
-    let number = value.trim();
-    if (number && isFinite(number)) {
-      if (min === undefined || max === undefined) {
-        return true;
-      } else if (+number >= min && +number <= max && regexp.test(number)) {
-        let date = document.getElementById("date");
-        date.setAttribute("required", true);
-        return true;
-      } else {
-        date.setAttribute("required", false);
-        return false;
+export const checkForm = (e) => {
+  let { name, value } = e.target;
+  let number = value.trim();
+  setValue({ ...values, [name]: value });
+  if (name === "name") {
+    if (value.length < 20 || value.length > 60) {
+      setInputErrors({
+        ...inputErrors,
+        [name]: "минимум 20, максимум 60 символов",
+      });
+      if (!value) {
+        setInputErrors({
+          ...inputErrors,
+          [name]: "Поле не может быть пустым",
+        });
       }
     } else {
-      date.setAttribute("required", false);
-      return false;
+      setInputErrors({ ...inputErrors, [name]: "" });
     }
-  }
+  } else if (name === "description") {
+    if (value.length > 200) {
+      setInputErrors({
+        ...inputErrors,
+        [name]: "максимум 200 символов",
+      });
+      if (!value) {
+        setInputErrors({
+          ...inputErrors,
+          [name]: "",
+        });
+      }
+    } else {
+      setInputErrors({ ...inputErrors, [name]: "" });
+    }
+  } else if (name === "price") {
+    let regexp = /^\d+(?:[.]\d\d)*$/gm;
+    if (
+      !(number && isFinite(number)) ||
+      +value < 0.01 ||
+      +value > 99999999.99 ||
+      !regexp.test(value)
+    ) {
+      setInputErrors({
+        ...inputErrors,
+        [name]: "цена не корректна, пример: 10.99, min 0.01 - max 99999999.99",
+      });
 
-  function checkDate(value) {
-    let discount = document.getElementById("discount");
+      if (!value) {
+        setInputErrors({
+          ...inputErrors,
+          [name]: "Поле не может быть пустым",
+        });
+      }
+    } else {
+      setInputErrors({ ...inputErrors, [name]: "" });
+    }
+  } else if (name === "discount") {
+    let regexp = /^[0-9]+$/;
+    if (
+      !(number && isFinite(number)) ||
+      +value < 10 ||
+      +value > 90 ||
+      !regexp.test(value)
+    ) {
+      setInputErrors({
+        ...inputErrors,
+        [name]: "целое число от 10 до 90",
+      });
+      if (!value) {
+        setInputErrors({
+          ...inputErrors,
+          discountDateEnd: "",
+        });
+        setInputErrors({ ...inputErrors, [name]: "" });
+      }
+    } else {
+      setInputErrors({ ...inputErrors, [name]: "" });
+    }
+  } else if (name === "discountDateEnd") {
     let now = new Date();
     let checkingDate = new Date(value);
-    if (checkingDate - now) return true;
-    else return false;
-  }
-
-  function isEmty(value) {
-    return value.trim() === "" ? true : false;
-  }
-
-  function checkInputs(elem, formVerify) {
-    let value = elem.value;
-    let required = elem.dataset.hasOwnProperty("required"); //true false
-    let typeValid = elem.dataset.validator;
-
-    let statusInput;
-    //checking that the input is empty
-    if (isEmty(value)) {
-      statusInput = !required;
-    } else if (typeValid === "letters") {
-      statusInput = checkLetters(value);
-    } else if (typeValid === "price") {
-      let min = elem.dataset.validatorMin;
-      let max = elem.dataset.validatorMax;
-      statusInput = checkPrice(value, min, max);
-    } else if (typeValid === "discount") {
-      
-      let min = elem.dataset.validatorMin;
-      let max = elem.dataset.validatorMax;
-      statusInput = checkDiscount(value, min, max);
-    } else if (typeValid === "date") {
-      statusInput = checkDate(value);
+    if (checkingDate < now) {
+      setInputErrors({
+        ...inputErrors,
+        [name]: "Дата окончания скидки должна быть больше текущей даты",
+      });
+    } else {
+      setInputErrors({ ...inputErrors, [name]: "" });
     }
-
-    if (!statusInput) {
-      elem.classList.add(formVerify["inputErrorClass"]);
-    }
-    return statusInput;
   }
-
-  // Код валидации формы
-  window.validateForm = function (formVerify) {
-    let form = document.getElementById(formVerify["formId"]);
-
-    form.addEventListener(
-      "focus",
-      function (event) {
-        let elem = event.target;
-        if (elem.tagName === "INPUT") {
-          elem.classList.remove(formVerify["inputErrorClass"]);
-        }
-      },
-      true
-    );
-
-    form.addEventListener(
-      "blur",
-      function (event) {
-        let elem = event.target;
-        if (elem.tagName === "INPUT");
-        {
-          checkInputs(elem, formVerify);
-        }
-      },
-      true
-    );
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      let inputs = form.getElementsByTagName("input");
-
-      form.classList.remove(formVerify["formInvalidClass"]);
-      form.classList.remove(formVerify["formValidClass"]);
-
-      let statusForm = [...inputs]
-        .map((item) => checkInputs(item, formVerify))
-        .find((item) => item === false);
-      if (statusForm === false) {
-        form.classList.add(formVerify["formInvalidClass"]);
-      } else {
-        form.classList.add(formVerify["formValidClass"]);
-      }
-    });
-  };
-}
+};
