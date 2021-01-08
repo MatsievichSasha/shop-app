@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useCards } from "../../contexts/CardsContext";
+import { useCards } from "../cards/cardsContext/cardsContext";
 import { Link } from "react-router-dom";
 
 let styles = {

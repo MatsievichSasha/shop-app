@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useCards } from "../../contexts/CardsContext";
+import { useCards } from "../cards/cardsContext/cardsContext"
 import dbApp from "firebase";
 import Alert from "../Alert";
 import { useHistory } from "react-router-dom";
