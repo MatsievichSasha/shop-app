@@ -5,6 +5,7 @@ import Alert from "../Alert";
 import { useHistory } from "react-router-dom";
 import { cardsReduser, ACTIONS } from '../cards/cardsContext/cardsReduser'
 import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
+import { imageSize } from "../../lib/getImageSize"
 
 export default function CreateCard() {
 
@@ -31,7 +32,11 @@ export default function CreateCard() {
   ////
 
   const handleInputChange = (e) => {
-    onInputChange(e.target.name, e.target.value, dispatch, formState);
+    if (e.target.name === "file_img") {
+      imageSize(e.target.name, e.target.files[0], dispatch, formState)
+    } else {
+      onInputChange(e.target.name, e.target.value, dispatch, formState);
+    }
   }
 
   const handleInputBlur = (e) => {
@@ -237,6 +242,7 @@ export default function CreateCard() {
         setError("Failed to log in");
       }
     } */
+  console.log(formState)
   console.log(showSuccess)
   return (
     <>
@@ -285,6 +291,9 @@ export default function CreateCard() {
                   Изображение (min 200px, max 4000px, .jpg, .jpeg,.png):
                 </label>
                 <div className="col-sm-9">
+                  {formState.file_img.hasError && (
+                    <div className="error">{formState.file_img.error}</div>
+                  )}
                   <input
                     onChange={handleInputChange}
                     ref={refImageInput}
@@ -296,10 +305,8 @@ export default function CreateCard() {
                   />
                 </div>
               </div>
-              {/*  {formState.urlImg.hasError && (
-                <div className="error">{formState.urlImg.error}</div>
-              )}
-              {hasImage && (
+
+              {/* {hasImage && (
                 <div>
                   <img
                     src={formState.urlImg.values}

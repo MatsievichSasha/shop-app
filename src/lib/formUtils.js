@@ -60,7 +60,6 @@ export const onInputBlur = (name, value, dispatch, formState) => {
 }
 
 export const validateInput = (name, value, file) => {
-  console.log(name)
   let hasError = false;
   let error = "";
   switch (name) {
@@ -119,50 +118,6 @@ export const validateInput = (name, value, file) => {
         hasError = true;
       }
       break;
-
-    /*  case "file_img":
- 
-       const ImageMaxSize = 4000;
-       const ImageMinSize = 200;
- 
-       if (file.type === "image/jpeg" || file.type === "image/pjpeg" || file.type === "image/png" || file.type === "image/jpg") { */
-    /* let img = new Image();
-    img.onload = () => {
-      function getSize(img, error, hasError) {
-        var h = img.height;
-        var w = img.width;
-        if (w < ImageMinSize || h < ImageMinSize || w > ImageMaxSize || h > ImageMaxSize) {
-          hasError = true;
-          console.log('Error size')
-
-          error = `У вашего файла разрешение ${w}*${h}. Допустимое разрешение min = 200px, max = 4000px`
-        } else {
-          error = ""
-          console.log('OK!')
-        }
-      }
-      getSize(img, error, hasError)
-    };
-    img.src = window.URL.createObjectURL(file); */
-    /*         imageSize(file).then(({ width, height }) => {
-              console.log(width, height)
-              if (width < ImageMinSize || height < ImageMinSize || width > ImageMaxSize || height > ImageMaxSize) {
-                hasError = true;
-                console.log('Error size')
-                error = `Недопустимое разрешение(У вашего изображения ${width}*${height}). Допустимое разрешение min = 200px, max = 4000px`
-              } else {
-                error = ""
-                console.log('OK!')
-              }
-            },
-              (e) => { console.log(e) }) */
-    /*        imageSize(file, hasError, error, dispatch)
-         } else {
-           hasError = true;
-           error = "Недопустимый формат файла. Выберите другой файл (.jpg, .jpeg,.png)."
-         }
-   
-         break */
     default:
       break;
   }
