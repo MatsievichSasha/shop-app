@@ -18,10 +18,8 @@ function App() {
       <AuthProvider>
         <CardsProvider>
           <Switch>
-            {/*  <Privetroute exact path="/" component={Cards} /> */}
-            <Privetroute path="/" component={CreateCard} />
-            {/* <Privetroute path="/create-card" component={CreateCard} /> */}
-            {/* <Privetroute path="/edit-card" component={EditCard} /> */}
+            <Privetroute exact path="/" component={Cards} />
+            <Privetroute path="/create-card" component={CreateCard} />
             <Privetroute path="/profile" component={Profile} />
             <Privetroute path="/update-profile" component={UpdateProfile} />
             <Route path="/signup" component={SignUp} />

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import dbApp from "firebase";
 
+
 const CardsContext = React.createContext();
 
 export function useCards() {
@@ -8,6 +9,9 @@ export function useCards() {
 }
 
 export default function CardsProvider({ children }) {
+
+
+
   const [prodactObjects, setProdactObjects] = useState({});
   const db = dbApp.database();
 
@@ -23,10 +27,10 @@ export default function CardsProvider({ children }) {
       });
   }, []);
 
-  function sendData(values) {
+  function sendData(object) {
     db.ref()
       .child("product")
-      .push(values, (err) => {
+      .push(object, (err) => {
         if (err) {
           console.log(err);
         }

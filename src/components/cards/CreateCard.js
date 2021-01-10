@@ -4,28 +4,94 @@ import dbApp from "firebase";
 import Alert from "../Alert";
 import { useHistory } from "react-router-dom";
 import { cardsReduser, ACTIONS } from '../cards/cardsContext/cardsReduser'
-import { onInputChange } from '../../lib/formUtils'
+import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
 
 export default function CreateCard() {
 
   const initialFieldValues = {
     name: { value: "", touched: false, hasError: true, error: "" },
-    /*     urlImg: "",
-        description: "",
-        price: "",
-        discount: "",
-        discountDateEnd: "", */
+    file_img: { value: "", touched: false, hasError: true, error: "" },
+    description: { value: "", touched: false, hasError: false, error: "" },
+    price: { value: "", touched: false, hasError: true, error: "" },
+    discount: { value: "", touched: false, hasError: false, error: "" },
+    discountDateEnd: { value: "", touched: false, hasError: false, error: "" },
     isFormValid: false,
   };
 
   const [formState, dispatch] = useReducer(cardsReduser, initialFieldValues)
+  const [showError, setShowError] = useState("")
+  const [showSuccess, setShowSuccess] = useState("")
+  const { sendData } = useCards();
+  const history = useHistory();
+  ////
+  const [hasImage, setHasImage] = useState(false);
+  const refImageInput = useRef();
+  const ImageMaxSize = 4000;
+  const ImageMinSize = 200;
+  ////
 
   const handleInputChange = (e) => {
-    onInputChange("name", e.target.value, dispatch, formState);
+    onInputChange(e.target.name, e.target.value, dispatch, formState);
   }
 
-  function handleFormSubmit(e) {
+  const handleInputBlur = (e) => {
+    onInputBlur(e.target.name, e.target.value, dispatch, formState);
+  }
+
+  const handleInputFocus = (e) => {
+    if (e.target.tagName === "INPUT") {
+      if (showSuccess) {
+        setShowSuccess("");
+      }
+    }
+  }
+  async function handleFormSubmit(e) {
+    let { name: { value: name },
+      description: { value: description },
+      price: { value: price },
+      discount: { value: discount },
+      discountDateEnd: { value: discountDateEnd },
+    } = formState
     e.preventDefault();
+    let isFormValid = true
+    for (const name in formState) {
+      const item = formState[name]
+      const { value } = item
+      const { hasError, error } = validateInput(name, value)
+      if (hasError) {
+        isFormValid = false
+      }
+      if (name) {
+        dispatch({
+          type: ACTIONS.CHANGE_FIELD,
+          payload: {
+            name,
+            value,
+            hasError,
+            error,
+            touched: true,
+            isFormValid,
+          },
+        })
+      }
+    }
+
+    if (!isFormValid) {
+      setShowError("Пожалуйста заполните все поля корректно")
+    } else {
+      try {
+        await sendData({ name, description, price, discount, discountDateEnd });
+        setShowSuccess("Товар успешно добавлен")
+        dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
+        /* history.push("/"); */
+      } catch {
+        setShowError("Произошла ошибка при отправке");
+      }
+    }
+    // Hide the error message after 5 seconds
+    setTimeout(() => {
+      setShowError("")
+    }, 5000)
   }
 
   /*   const formErrors = {
@@ -51,10 +117,7 @@ export default function CreateCard() {
   
     const { sendData } = useCards();
   
-    const [hasImage, setHasImage] = useState(false);
-    const refImageInput = useRef();
-    const ImageMaxSize = 4000;
-    const ImageMinSize = 200; */
+ */
 
   /*   useEffect(() => {
       if (inputErrors.name || inputErrors.price || inputErrors.discountDateEnd) {
@@ -167,25 +230,29 @@ export default function CreateCard() {
 
   /*    function handleFormSubmit(e) {
       e.preventDefault();
-      addCard()
        try {
         await sendData(values);
         history.push("/");
       } catch {
         setError("Failed to log in");
-      } 
+      }
     } */
-
+  console.log(showSuccess)
   return (
     <>
       <div className="container">
         <section className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title">Добавление товара</h3>
+            <h3 className="panel-title col-sm-9" style={{ textAlign: "center" }}>Добавление товара</h3>
+            {showError && !formState.isFormValid && (
+              <div className="form_error">{showError}</div>)}
+            {showSuccess && (
+              <div className="form_success">{showSuccess}</div>)}
           </div>
           <div className="panel-body">
             <form
               onSubmit={handleFormSubmit}
+              onFocus={handleInputFocus}
               className="form-horizontal"
               role="form"
             >
@@ -194,11 +261,11 @@ export default function CreateCard() {
                   Заголовок
                 </label>
                 <div className="col-sm-9">
-                  {/*                   {nameDirty && inputErrors.name && (
-                    <div style={{ color: "red" }}>{inputErrors.name}</div>
-                  )} */}
+                  {formState.name.touched && formState.name.hasError && (
+                    <div className="error">{formState.name.error}</div>
+                  )}
                   <input
-                    /*                     onBlur={blurHandleValidation} */
+                    onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     value={formState.name.value}
                     type="text"
@@ -206,58 +273,51 @@ export default function CreateCard() {
                     name="name"
                     id="name"
                     placeholder="Название товара"
-                    required
+                    /* required */
                     minLength="20"
                     maxLength="60"
                     autoComplete="off"
                   />
                 </div>
               </div>
-              {/*             <div className="form-group">
-                <label className="control-label col-sm-3" htmlFor="file_img">
-                  Изображение (min 200px*200px, max 4000px*4000px, .jpg, .jpeg,
-                  .png):
+              <div className="form-group">
+                <label className="control-label col-sm-9" htmlFor="file_img">
+                  Изображение (min 200px, max 4000px, .jpg, .jpeg,.png):
                 </label>
-                <input
-                  onChange={onFileChange}
-                  ref={refImageInput}
-                  type="file"
-                  id="file_img"
-                  name="file_img"
-                  required
-                  accept=".jpg, .jpeg, .png"
-                  multiple
-                />
+                <div className="col-sm-9">
+                  <input
+                    onChange={handleInputChange}
+                    ref={refImageInput}
+                    type="file"
+                    id="file_img"
+                    name="file_img"
+                    /* required */
+                    accept=".jpg, .jpeg, .png"
+                  />
+                </div>
               </div>
-              {error && (
-                <Alert
-                  value={{
-                    text: error,
-                    type: "danger",
-                  }}
-                ></Alert>
+              {/*  {formState.urlImg.hasError && (
+                <div className="error">{formState.urlImg.error}</div>
               )}
               {hasImage && (
                 <div>
                   <img
-                    src={values.urlImg}
+                    src={formState.urlImg.values}
                     style={{ width: "200px", height: "auto" }}
                   />
                 </div>
-              )}
+              )} */}
               <div className="form-group">
                 <label htmlFor="description" className="col-sm-3 control-label">
                   Описание
                 </label>
                 <div className="col-sm-9">
-                  {descriptionDirty && inputErrors.description && (
-                    <div style={{ color: "red" }}>
-                      {inputErrors.description}
-                    </div>
+                  {formState.description.touched && formState.description.hasError && (
+                    <div className="error">{formState.description.error}</div>
                   )}
                   <textarea
-                    value={values.description}
-                    onBlur={blurHandleValidation}
+                    value={formState.description.value}
+                    onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     id="description"
                     name="description"
@@ -271,20 +331,23 @@ export default function CreateCard() {
                 <label htmlFor="price" className="col-sm-3 control-label">
                   Цена, $
                 </label>
-                <div className="col-sm-3">
-                  {priceDirty && inputErrors.price && (
-                    <div style={{ color: "red" }}>{inputErrors.price}</div>
+                <div className="col-sm-9">
+                  {formState.price.touched && formState.price.hasError && (
+                    <div className="error">{formState.price.error}</div>
                   )}
                   <input
-                    value={values.price}
-                    onBlur={blurHandleValidation}
+                    value={formState.price.value}
+                    onBlur={handleInputBlur}
                     onChange={handleInputChange}
-                    type="text"
+                    type="number"
                     className="form-control"
                     name="price"
                     id="price"
-                    required
+                    /* required */
                     autoComplete="off"
+                    step="0.01"
+                    min="0.01"
+                    max="99999999.99"
                   />
                 </div>
               </div>
@@ -292,20 +355,23 @@ export default function CreateCard() {
                 <label htmlFor="discount" className="col-sm-3 control-label">
                   Процент скидки, %
                 </label>
-                <div className="col-sm-3">
-                  {discountDirty && inputErrors.discount && (
-                    <div style={{ color: "red" }}>{inputErrors.discount}</div>
+                <div className="col-sm-9">
+                  {formState.discount.touched && formState.discount.value && (
+                    <div className="error">{formState.discount.error}</div>
                   )}
                   <input
-                    value={values.discount}
-                    onBlur={blurHandleValidation}
+                    value={formState.discount.value}
+                    onBlur={handleInputBlur}
                     onChange={handleInputChange}
-                    type="text"
+                    type="number"
                     className="form-control"
                     name="discount"
                     id="discount"
                     placeholder="от 10% до 90%"
                     autoComplete="off"
+                    step="1"
+                    min="10"
+                    max="90"
                   />
                 </div>
               </div>
@@ -316,15 +382,16 @@ export default function CreateCard() {
                 >
                   Дата окончания скидки:
                 </label>
-                <div className="col-sm-3">
-                  {inputErrors.discountDateEnd && (
-                    <div style={{ color: "red" }}>
-                      {inputErrors.discountDateEnd}
+                <div className="col-sm-9">
+                  {formState.discountDateEnd.error && (
+                    <div className="error">
+                      {formState.discountDateEnd.error}
                     </div>
                   )}
                   <input
+                    value={formState.discountDateEnd.value}
                     onChange={handleInputChange}
-                    onBlur={blurHandleValidation}
+                    onBlur={handleInputBlur}
                     type="date"
                     className="form-control"
                     name="discountDateEnd"
@@ -332,12 +399,12 @@ export default function CreateCard() {
                     placeholder="dd.mm.yyyy"
                     autoComplete="off"
                   />
-                </div> 
-              </div>*/}
+                </div>
+              </div>
               <div className="form-group">
                 <div className="col-sm-offset-3 col-sm-9">
                   <button
-                    /*  disabled={!formValid} */
+                    /* disabled={!formState.isFormValid} */
                     type="submit"
                     className="btn btn-primary"
                   >

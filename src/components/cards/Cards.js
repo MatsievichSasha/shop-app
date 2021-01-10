@@ -12,18 +12,18 @@ let styles = {
 };
 
 export default function Cards() {
-  /*  const { prodactObjects } = useCards(); */
+  const { prodactObjects } = useCards();
 
   return (
     <>
       <ul style={styles.ul}>
-        {/*   {Object.keys(prodactObjects).map((id) => {
+        {Object.keys(prodactObjects).map((id) => {
           return <Card
             object={prodactObjects[id]}
             key={id}
             id={id}>
           </Card>;
-        })} */}
+        })}
       </ul>
     </>
   );
