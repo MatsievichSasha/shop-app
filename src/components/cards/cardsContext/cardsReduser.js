@@ -11,9 +11,10 @@ export const ACTIONS = {
 export const cardsReduser = (state, action) => {
   switch (action.type) {
     /*     case ACTIONS.ADD_CARD:
-          return 
-        case ACTIONS.EDIT_CARD:
           return */
+    case ACTIONS.EDIT_CARD:
+      return action.payload
+
     case ACTIONS.CHANGE_FIELD:
       const { name, value, hasError, error, touched, isFormValid } = action.payload
       if (name === 'price') {

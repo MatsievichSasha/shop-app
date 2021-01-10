@@ -1,28 +1,14 @@
-import React, { useEffect, useRef, useState, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import { useCards } from "../cards/cardsContext/cardsContext"
-
-import { useHistory } from "react-router-dom";
-import { cardsReduser, ACTIONS } from '../cards/cardsContext/cardsReduser'
+import { ACTIONS } from '../cards/cardsContext/cardsReduser'
 import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
 import { imageSize } from "../../lib/getImageSize"
 
 export default function CreateCard() {
 
-  const initialFieldValues = {
-    name: { value: "", touched: false, hasError: true, error: "" },
-    file_img: { value: "", touched: false, hasError: true, error: "" },
-    description: { value: "", touched: false, hasError: false, error: "" },
-    price: { value: "", touched: false, hasError: true, error: "" },
-    discount: { value: "", touched: false, hasError: false, error: "" },
-    discountDateEnd: { value: "", touched: false, hasError: false, error: "" },
-    isFormValid: false,
-  };
-
-  const [formState, dispatch] = useReducer(cardsReduser, initialFieldValues)
   const [showError, setShowError] = useState("")
   const [showSuccess, setShowSuccess] = useState("")
-  const { sendData } = useCards();
-  const refImageInput = useRef();
+  const { initialFieldValues, dispatch, formState, sendData } = useCards();
 
   const handleInputChange = (e) => {
     try {
@@ -60,20 +46,6 @@ export default function CreateCard() {
     e.preventDefault();
     let isFormValid = true
 
-    if (formState.file_img.value === '') {
-      dispatch({
-        type: ACTIONS.CHANGE_FIELD,
-        payload: {
-          name: "file_img",
-          value: "",
-          hasError: true,
-          error: "Установите изображение",
-          touched: true,
-          isFormValid: true,
-        },
-      })
-    }
-
     for (const name in formState) {
       const item = formState[name]
       const { value } = item
@@ -91,6 +63,20 @@ export default function CreateCard() {
             error,
             touched: true,
             isFormValid,
+          },
+        })
+      }
+      if (formState.file_img.value === '') {
+        isFormValid = false
+        dispatch({
+          type: ACTIONS.CHANGE_FIELD,
+          payload: {
+            name: "file_img",
+            value: "",
+            hasError: true,
+            error: "Установите изображение",
+            touched: true,
+            isFormValid: false,
           },
         })
       }
@@ -112,6 +98,7 @@ export default function CreateCard() {
       setShowError("")
     }, 5000)
   }
+  console.log(formState)
   return (
     <>
       <div className="container">
@@ -164,7 +151,6 @@ export default function CreateCard() {
                   )}
                   <input
                     onChange={handleInputChange}
-                    ref={refImageInput}
                     type="file"
                     id="file_img"
                     name="file_img"

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCards } from "../cards/cardsContext/cardsContext";
 import { Link } from "react-router-dom";
+import { ACTIONS } from '../cards/cardsContext/cardsReduser'
 
 let styles = {
   li: {
@@ -50,7 +51,7 @@ let styles = {
 };
 
 export default function Card({ object, id }) {
-  const { removeCard } = useCards();
+  const { removeCard, dispatch, formState } = useCards();
   const [discountPrice, setDiscountPrice] = useState("");
   const [discountDateEnd, setDiscountDateEnd] = useState("");
 
@@ -60,7 +61,8 @@ export default function Card({ object, id }) {
 
   useEffect(() => {
     priceCreat(object);
-  }, []);
+  });
+
 
   function priceCreat(object) {
     let msInDay = 86400000;
@@ -75,6 +77,10 @@ export default function Card({ object, id }) {
         );
       }
     }
+  }
+
+  const handleOnClick = () => {
+    dispatch({ type: ACTIONS.EDIT, payload: object })
   }
 
   return (
@@ -107,10 +113,11 @@ export default function Card({ object, id }) {
         <li className="list-inline-item">
           <Link
             to={{
-              pathname: "/edit-Card",
+              pathname: "/edit-card",
               object: object,
               id: id,
             }}
+            onClick={handleOnClick}
             className="btn btn-success btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
