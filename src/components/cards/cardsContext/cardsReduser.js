@@ -19,7 +19,7 @@ export const cardsReduser = (state, action) => {
       if (name === 'price') {
         value.replace(/,/g, '.')
       }
-      console.log("value:", value)
+      console.log("value:", name, value)
       console.log('error:', error)
       console.log("hasError:", hasError)
       console.log("isFormValid:", isFormValid)

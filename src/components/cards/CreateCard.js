@@ -27,8 +27,7 @@ export default function CreateCard() {
   ////
   const [hasImage, setHasImage] = useState(false);
   const refImageInput = useRef();
-  const ImageMaxSize = 4000;
-  const ImageMinSize = 200;
+
   ////
 
   const handleInputChange = (e) => {
@@ -51,14 +50,33 @@ export default function CreateCard() {
     }
   }
   async function handleFormSubmit(e) {
+
     let { name: { value: name },
+      file_img: { value: file_img },
       description: { value: description },
       price: { value: price },
       discount: { value: discount },
       discountDateEnd: { value: discountDateEnd },
     } = formState
+
     e.preventDefault();
     let isFormValid = true
+    console.log(formState.file_img.value)
+
+    if (formState.file_img.value === '') {
+      dispatch({
+        type: ACTIONS.CHANGE_FIELD,
+        payload: {
+          name: "file_img",
+          value: "",
+          hasError: true,
+          error: "Установите изображение",
+          touched: true,
+          isFormValid: true,
+        },
+      })
+    }
+
     for (const name in formState) {
       const item = formState[name]
       const { value } = item
@@ -66,7 +84,7 @@ export default function CreateCard() {
       if (hasError) {
         isFormValid = false
       }
-      if (name) {
+      if (name !== "file_img") {
         dispatch({
           type: ACTIONS.CHANGE_FIELD,
           payload: {
@@ -85,7 +103,7 @@ export default function CreateCard() {
       setShowError("Пожалуйста заполните все поля корректно")
     } else {
       try {
-        await sendData({ name, description, price, discount, discountDateEnd });
+        await sendData({ name, file_img, description, price, discount, discountDateEnd });
         setShowSuccess("Товар успешно добавлен")
         dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
         /* history.push("/"); */
