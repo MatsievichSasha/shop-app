@@ -3,13 +3,14 @@ import { useCards } from "../cards/cardsContext/cardsContext"
 import { ACTIONS } from '../cards/cardsContext/cardsReduser'
 import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
 import { imageSize } from "../../lib/getImageSize"
+import { isFormValidation } from "../../lib/isFormValidation"
 
 export default function CreateCard() {
 
   const [showError, setShowError] = useState("")
   const [showSuccess, setShowSuccess] = useState("")
   const { initialFieldValues, dispatch, formState, sendData } = useCards();
-
+  const [fileImgValue, setFileImgValue] = useState('')
   const handleInputChange = (e) => {
     try {
       if (e.target.name === "file_img") {
@@ -34,6 +35,7 @@ export default function CreateCard() {
     }
   }
   async function handleFormSubmit(e) {
+    e.preventDefault();
 
     let { name: { value: name },
       file_img: { value: file_img },
@@ -43,44 +45,7 @@ export default function CreateCard() {
       discountDateEnd: { value: discountDateEnd },
     } = formState
 
-    e.preventDefault();
-    let isFormValid = true
-
-    for (const name in formState) {
-      const item = formState[name]
-      const { value } = item
-      const { hasError, error } = validateInput(name, value)
-      if (hasError) {
-        isFormValid = false
-      }
-      if (name !== "file_img") {
-        dispatch({
-          type: ACTIONS.CHANGE_FIELD,
-          payload: {
-            name,
-            value,
-            hasError,
-            error,
-            touched: true,
-            isFormValid,
-          },
-        })
-      }
-      if (formState.file_img.value === '') {
-        isFormValid = false
-        dispatch({
-          type: ACTIONS.CHANGE_FIELD,
-          payload: {
-            name: "file_img",
-            value: "",
-            hasError: true,
-            error: "Установите изображение",
-            touched: true,
-            isFormValid: false,
-          },
-        })
-      }
-    }
+    let isFormValid = isFormValidation(formState, dispatch)
 
     if (!isFormValid) {
       setShowError("Пожалуйста заполните все поля корректно")
@@ -89,6 +54,7 @@ export default function CreateCard() {
         await sendData({ name, file_img, description, price, discount, discountDateEnd });
         setShowSuccess("Товар успешно добавлен")
         dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
+        setFileImgValue('')
       } catch {
         setShowError("Произошла ошибка при отправке");
       }
@@ -98,7 +64,7 @@ export default function CreateCard() {
       setShowError("")
     }, 5000)
   }
-  console.log(formState)
+
   return (
     <>
       <div className="container">
@@ -150,6 +116,7 @@ export default function CreateCard() {
                     <div className="error">{formState.file_img.error}</div>
                   )}
                   <input
+                    value={fileImgValue}
                     onChange={handleInputChange}
                     type="file"
                     id="file_img"

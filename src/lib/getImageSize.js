@@ -33,9 +33,6 @@ export const imageSize = async (name, file, dispatch, formState) => {
       const ImageMaxSize = 4000;
       const ImageMinSize = 200;
 
-      console.log(0, file.type)
-
-      console.log(1, file.type)
       if (width < ImageMinSize || height < ImageMinSize || width > ImageMaxSize || height > ImageMaxSize) {
         hasError = true;
         error = `Недопустимое разрешение(Ваше изображения ${width}px*${height}px). Допустимое разрешение min = 200px, max = 4000px`

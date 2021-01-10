@@ -51,7 +51,7 @@ let styles = {
 };
 
 export default function Card({ object, id }) {
-  const { removeCard, dispatch, formState } = useCards();
+  const { removeCard, dispatch } = useCards();
   const [discountPrice, setDiscountPrice] = useState("");
   const [discountDateEnd, setDiscountDateEnd] = useState("");
 
@@ -62,7 +62,6 @@ export default function Card({ object, id }) {
   useEffect(() => {
     priceCreat(object);
   });
-
 
   function priceCreat(object) {
     let msInDay = 86400000;
@@ -80,14 +79,14 @@ export default function Card({ object, id }) {
   }
 
   const handleOnClick = () => {
-    dispatch({ type: ACTIONS.EDIT, payload: object })
+    dispatch({ type: ACTIONS.EDIT_CARD, payload: object })
   }
 
   return (
     <li className="card" style={styles.li}>
       <article style={styles.wrapper} className="wrapper">
         <a className="img__container">
-          <img style={styles.img} src={object.file_img} alt="" />
+          <img style={styles.img} src={object.file_img} alt={object.name} />
         </a>
         <div className="name">{object.name}</div>
         <div styles={styles.prices}>
@@ -112,12 +111,12 @@ export default function Card({ object, id }) {
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
           <Link
+            onClick={handleOnClick}
             to={{
               pathname: "/edit-card",
               object: object,
               id: id,
             }}
-            onClick={handleOnClick}
             className="btn btn-success btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
@@ -129,13 +128,14 @@ export default function Card({ object, id }) {
         </li>
         <li className="list-inline-item">
           <button
+            onClick={handelRemove}
             className="btn btn-danger btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
           >
-            <FontAwesomeIcon onClick={handelRemove} icon={faTrash} />
+            <FontAwesomeIcon icon={faTrash} />
           </button>
         </li>
       </ul>

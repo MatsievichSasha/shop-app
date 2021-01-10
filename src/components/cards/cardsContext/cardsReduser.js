@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const ACTIONS = {
-  ADD_CARD: 'add-card',
   REMOVE_CARD: 'remove-card',
   EDIT_CARD: 'edit-card',
   CHANGE_FIELD: 'change-field',
@@ -9,22 +8,27 @@ export const ACTIONS = {
 }
 
 export const cardsReduser = (state, action) => {
+  let name, file_img, description, price, discount, discountDateEnd, value, hasError, error, touched, isFormValid
   switch (action.type) {
-    /*     case ACTIONS.ADD_CARD:
-          return */
+
     case ACTIONS.EDIT_CARD:
-      return action.payload
+      ({ name, file_img, description, price, discount, discountDateEnd } = action.payload)
+
+      return {
+        ...state,
+        name: { ...state.name, value: name },
+        file_img: { ...state.file_img, value: file_img },
+        description: { ...state.description, value: description },
+        price: { ...state.price, value: price },
+        discount: { ...state.discount, value: discount },
+        discountDateEnd: { ...state.discountDateEnd, value: discountDateEnd },
+      }
 
     case ACTIONS.CHANGE_FIELD:
-      const { name, value, hasError, error, touched, isFormValid } = action.payload
+      ({ name, value, hasError, error, touched, isFormValid } = action.payload)
       if (name === 'price') {
         value.replace(/,/g, '.')
       }
-      console.log("value:", name, value)
-      console.log('error:', error)
-      console.log("hasError:", hasError)
-      console.log("isFormValid:", isFormValid)
-
       return {
         ...state,
         [name]: { ...state[name], value, hasError, error, touched },
@@ -34,10 +38,6 @@ export const cardsReduser = (state, action) => {
     case ACTIONS.RESET:
       return action.payload
   }
-  /*     case ACTIONS.REMOVE_CARD:
-        return */
-
-
 
 }
 

@@ -1,61 +1,67 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, } from "react";
 import { useCards } from "../cards/cardsContext/cardsContext"
-import { useHistory } from "react-router-dom";
-import { ACTIONS } from '../cards/cardsContext/cardsReduser'
-import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
+import { onInputChange, onInputBlur } from '../../lib/formUtils'
 import { imageSize } from "../../lib/getImageSize"
+import { isFormValidation } from "../../lib/isFormValidation"
+
 
 export default function EditCard(props) {
 
+  const [showError, setShowError] = useState("")
+  const [showSuccess, setShowSuccess] = useState("")
+  const { dispatch, formState, setCardFB } = useCards();
 
-  const history = useHistory();
-
-
-  const [error, setError] = useState("");
-
-  const { setCardFB } = useCards();
-
-  if (props.location.object === undefined) {
-    history.push("/");
-  }
-  useEffect(() => {
-    if (inputErrors.name || inputErrors.price || inputErrors.discountDateEnd) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
+  const handleInputChange = (e) => {
+    try {
+      if (e.target.name === "file_img") {
+        imageSize(e.target.name, e.target.files[0], dispatch, formState)
+      } else {
+        onInputChange(e.target.name, e.target.value, dispatch, formState);
+      }
+    } catch (err) {
+      console.log(err)
     }
-  }, [inputErrors]);
-
-  useEffect(() => {
-    if (image) {
-      setHasImage(true);
-    }
-  });
-
-  useEffect(() => {
-    for (let key in values) {
-      console.log(values[key], key);
-      checkForm(values[key], key);
-    }
-  }, []);
-
-  function handleInputChange({ target: { value, name } }) {
-    setValue({ ...values, [name]: value });
-    checkForm(value, name);
   }
 
+  const handleInputBlur = (e) => {
+    onInputBlur(e.target.name, e.target.value, dispatch, formState);
+  }
 
-
-
+  const handleInputFocus = (e) => {
+    if (e.target.tagName === "INPUT") {
+      if (showSuccess) {
+        setShowSuccess("");
+      }
+    }
+  }
 
   async function handleFormSubmit(e) {
     e.preventDefault();
-    try {
-      await setCardFB(values, props.location.id);
-      history.push("/");
-    } catch {
-      setError("Failed to log in");
+
+    let { name: { value: name },
+      file_img: { value: file_img },
+      description: { value: description },
+      price: { value: price },
+      discount: { value: discount },
+      discountDateEnd: { value: discountDateEnd },
+    } = formState
+
+    let isFormValid = isFormValidation(formState, dispatch)
+
+    if (!isFormValid) {
+      setShowError("Пожалуйста заполните все поля корректно")
+    } else {
+      try {
+        await setCardFB({ name, file_img, description, price, discount, discountDateEnd }, props.location.id);
+        setShowSuccess("Изменения добавлены")
+      } catch {
+        setShowError("Произошла ошибка при отправке");
+      }
     }
+    // Hide the error message after 5 seconds
+    setTimeout(() => {
+      setShowError("")
+    }, 5000)
   }
 
   return (
@@ -63,7 +69,7 @@ export default function EditCard(props) {
       <div className="container">
         <section className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title col-sm-9" style={{ textAlign: "center" }}>Добавление товара</h3>
+            <h3 className="panel-title col-sm-9" style={{ textAlign: "center" }}>Редактирование товара</h3>
             {showError && !formState.isFormValid && (
               <div className="form_error">{showError}</div>)}
             {showSuccess && (

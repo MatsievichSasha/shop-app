@@ -1,21 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useCards } from "../components/cards/cardsContext/cardsContext"
+import { ACTIONS } from "../components/cards/cardsContext/cardsReduser"
 
-export const Navbar = () => (
-  <nav>
-    <div className="nav nav-tabs" id="nav-tab" role="tablist">
-      <Link to="/" className="nav-link" >
-        Все товары
-      </Link>
-      <Link to="/create-card" className="nav-link" >
-        Добавить товар
-      </Link>
-{/*       <Link to="/reduct-card" className="nav-link" >
-        Редактировать товар
-      </Link> */}
-      <Link to="/profile" className="nav-link" >
-        Profile
-      </Link>
-    </div>
-  </nav>
-);
+export const Navbar = () => {
+
+  const { dispatch, initialFieldValues } = useCards()
+  const stateReset = () => {
+    dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
+  }
+
+  return (
+    <nav>
+      <div className="nav nav-tabs" id="nav-tab" role="tablist">
+        <Link to="/" onClick={stateReset} className="nav-link" >
+          Все товары
+        </Link>
+        <Link to="/create-card" onClick={stateReset} className="nav-link" >
+          Добавить товар
+        </Link>
+        <Link to="/profile" onClick={stateReset} className="nav-link" >
+          Profile
+        </Link>
+      </div>
+    </nav>
+  );
+}
+
+
