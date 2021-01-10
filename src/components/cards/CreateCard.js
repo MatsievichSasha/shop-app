@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useReducer } from "react";
 import { useCards } from "../cards/cardsContext/cardsContext"
-import dbApp from "firebase";
-import Alert from "../Alert";
+
 import { useHistory } from "react-router-dom";
 import { cardsReduser, ACTIONS } from '../cards/cardsContext/cardsReduser'
 import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
@@ -23,18 +22,17 @@ export default function CreateCard() {
   const [showError, setShowError] = useState("")
   const [showSuccess, setShowSuccess] = useState("")
   const { sendData } = useCards();
-  const history = useHistory();
-  ////
-  const [hasImage, setHasImage] = useState(false);
   const refImageInput = useRef();
 
-  ////
-
   const handleInputChange = (e) => {
-    if (e.target.name === "file_img") {
-      imageSize(e.target.name, e.target.files[0], dispatch, formState)
-    } else {
-      onInputChange(e.target.name, e.target.value, dispatch, formState);
+    try {
+      if (e.target.name === "file_img") {
+        imageSize(e.target.name, e.target.files[0], dispatch, formState)
+      } else {
+        onInputChange(e.target.name, e.target.value, dispatch, formState);
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -61,7 +59,6 @@ export default function CreateCard() {
 
     e.preventDefault();
     let isFormValid = true
-    console.log(formState.file_img.value)
 
     if (formState.file_img.value === '') {
       dispatch({
@@ -106,7 +103,6 @@ export default function CreateCard() {
         await sendData({ name, file_img, description, price, discount, discountDateEnd });
         setShowSuccess("Товар успешно добавлен")
         dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
-        /* history.push("/"); */
       } catch {
         setShowError("Произошла ошибка при отправке");
       }
@@ -116,152 +112,6 @@ export default function CreateCard() {
       setShowError("")
     }, 5000)
   }
-
-  /*   const formErrors = {
-      name: "Поле не может быть пустым",
-      urlImg: "Поле не может быть пустым",
-      description: "",
-      price: "Поле не может быть пустым",
-      discount: "",
-      discountDateEnd: "",
-    }; */
-  /*  const [name, setValue] = useState(initialFieldValues); */
-
-  /*   const history = useHistory(); */
-
-  //for validation
-  /*   const [error, setError] = useState("");
-    const [nameDirty, setNameDirty] = useState(false);
-    const [descriptionDirty, setDescriptionDirty] = useState(false);
-    const [priceDirty, setPriceDirty] = useState(false);
-    const [discountDirty, setDiscountDirty] = useState(false);
-    const [inputErrors, setInputErrors] = useState(formErrors);
-    const [formValid, setFormValid] = useState(false);
-  
-    const { sendData } = useCards();
-  
- */
-
-  /*   useEffect(() => {
-      if (inputErrors.name || inputErrors.price || inputErrors.discountDateEnd) {
-        setFormValid(false);
-      } else {
-        setFormValid(true);
-      }
-    }, [inputErrors]); */
-
-  /*   function handleInputChange(e) {
-  
-    } */
-
-  /*   function blurHandleValidation(e) {
-      switch (e.target.name) {
-        case "name":
-          setNameDirty(true);
-          break;
-        case "description":
-          setDescriptionDirty(true);
-          break;
-        case "price":
-          setPriceDirty(true);
-          break;
-        case "discount":
-          setDiscountDirty(true);
-          if (e.target.value) {
-            setInputErrors({
-              ...inputErrors,
-              discountDateEnd: "При наличии скидки - указать дату",
-            });
-          }
-      }
-    } */
-
-  /*   function onFileChange(e) {
-      setError("");
-      setHasImage(false);
-      e.preventDefault();
-      const file = e.target.files[0];
-  
-      let fileTypes = ["image/jpeg", "image/pjpeg", "image/png", "image/jpg"];
-  
-      function validFileType(file) {
-        for (var i = 0; i < fileTypes.length; i++) {
-          if (file.type === fileTypes[i]) {
-            return true;
-          }
-        }
-        return false;
-      }
-  
-      if (validFileType(file)) {
-        let img = new Image();
-        img.onload = () => {
-          var h = img.height;
-          var w = img.width;
-          if (
-            w < ImageMinSize ||
-            h < ImageMinSize ||
-            w > ImageMaxSize ||
-            h > ImageMaxSize
-          ) {
-            e.target.value = "";
-            setHasImage(false);
-            setError(
-              "Sorry, this image does not match the size or type we wanted. Choose another file."
-            );
-          } else {
-            setHasImage(true);
-            setError("");
-          }
-        };
-        img.src = window.URL.createObjectURL(e.target.files[0]);
-      } else {
-        e.target.value = "";
-        setError(
-          "Sorry, this image does not match the size or type we wanted. Choose another file."
-        );
-      }
-    } */
-
-  /*   useEffect(() => {
-      if (hasImage) {
-        const file = refImageInput.current.files[0];
-        const storageRef = dbApp.storage().ref();
-        const fileRef = storageRef.child(`images/${file.name}`).put(file); //create ref for file
-  
-        fileRef.on(
-          "state_changed",
-          function (snapshot) {
-            let progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-          },
-          function (error) {
-            console.log(error);
-          },
-          function () {
-            fileRef.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-              setValue({
-                ...values,
-                urlImg: downloadURL,
-              });
-            });
-          }
-        );
-      }
-    }, [hasImage]); */
-
-  /*    function handleFormSubmit(e) {
-      e.preventDefault();
-       try {
-        await sendData(values);
-        history.push("/");
-      } catch {
-        setError("Failed to log in");
-      }
-    } */
-  console.log(formState)
-  console.log(showSuccess)
   return (
     <>
       <div className="container">
@@ -324,14 +174,14 @@ export default function CreateCard() {
                 </div>
               </div>
 
-              {/* {hasImage && (
+              {formState.file_img.value && (
                 <div>
                   <img
-                    src={formState.urlImg.values}
+                    src={formState.file_img.value}
                     style={{ width: "200px", height: "auto" }}
                   />
                 </div>
-              )} */}
+              )}
               <div className="form-group">
                 <label htmlFor="description" className="col-sm-3 control-label">
                   Описание
@@ -429,7 +279,6 @@ export default function CreateCard() {
               <div className="form-group">
                 <div className="col-sm-offset-3 col-sm-9">
                   <button
-                    /* disabled={!formState.isFormValid} */
                     type="submit"
                     className="btn btn-primary"
                   >

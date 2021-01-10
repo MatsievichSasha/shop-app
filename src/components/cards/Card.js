@@ -81,7 +81,7 @@ export default function Card({ object, id }) {
     <li className="card" style={styles.li}>
       <article style={styles.wrapper} className="wrapper">
         <a className="img__container">
-          <img style={styles.img} src={object.urlImg} alt="" />
+          <img style={styles.img} src={object.file_img} alt="" />
         </a>
         <div className="name">{object.name}</div>
         <div styles={styles.prices}>
