@@ -123,16 +123,17 @@ export default function EditCard(props) {
                     accept=".jpg, .jpeg, .png"
                   />
                 </div>
+                {formState.file_img.value && (
+                  <div>
+                    <img
+                      src={formState.file_img.value}
+                      style={{ width: "200px", height: "auto" }}
+                    />
+                  </div>
+                )}
               </div>
 
-              {formState.file_img.value && (
-                <div>
-                  <img
-                    src={formState.file_img.value}
-                    style={{ width: "200px", height: "auto" }}
-                  />
-                </div>
-              )}
+
               <div className="form-group">
                 <label htmlFor="description" className="col-sm-3 control-label">
                   Описание
