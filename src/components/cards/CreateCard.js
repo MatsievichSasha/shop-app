@@ -126,7 +126,7 @@ export default function CreateCard() {
                   />
                 </div>
                 {formState.file_img.value && (
-                  <div>
+                  <div className="show_file_img">
                     <img
                       src={formState.file_img.value}
                       style={{ width: "200px", height: "auto" }}

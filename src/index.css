@@ -42,3 +42,8 @@ code {
   border-radius: 0.25rem;
   margin: 1rem 0;
 }
+
+.show_file_img{
+  display: flex;
+  justify-content: center;
+}
