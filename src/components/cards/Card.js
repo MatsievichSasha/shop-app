@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCards } from "../cards/cardsContext/cardsContext";
 import { Link } from "react-router-dom";
-import { ACTIONS } from '../cards/cardsContext/cardsReduser'
+import { ACTIONS } from '../cards/cardsContext/cardsReduser';
+import ModaleDelete from "./ModalDelete";
+
 
 let styles = {
   li: {
@@ -48,16 +50,23 @@ let styles = {
   price_current_value: {
     color: "#f84147",
   },
+
+  discountText: {
+    fontSize: "10px",
+    color: "#2e796c",
+  }
 };
 
 export default function Card({ object, id }) {
   const { removeCard, dispatch } = useCards();
   const [discountPrice, setDiscountPrice] = useState("");
   const [discountDateEnd, setDiscountDateEnd] = useState("");
+  const [showModalDelete, setshowModalDelete] = useState(false);
 
-  function handelRemove() {
-    return removeCard(id);
-  }
+  const handleCloseModal = () => setshowModalDelete(false);
+  const handleShowModal = () => setshowModalDelete(true);
+
+
 
   useEffect(() => {
     priceCreat(object);
@@ -78,8 +87,12 @@ export default function Card({ object, id }) {
     }
   }
 
-  const handleOnClick = () => {
+  const handelEdit = () => {
     dispatch({ type: ACTIONS.EDIT_CARD, payload: object })
+  }
+
+  function handelRemove() {
+    return removeCard(id);
   }
 
   return (
@@ -96,12 +109,11 @@ export default function Card({ object, id }) {
           <div style={styles.price_current} className="price_current">
             <span
               style={styles.price_current_value}
-              className="price_current_value"
+              className="discountText"
             >
               {discountPrice ? `${discountPrice}$` : `${object.price}$`}
             </span>
-            <span className="price_valid"></span>
-            {discountDateEnd ? `Цена действительна ${discountDateEnd}д.` : null}
+            {discountDateEnd ? <span><span className="discountText" style={styles.discountText}>До конца акции</span> <span>{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span></span> : null}
           </div>
         </div>
         <div style={styles.description} className="description">
@@ -111,7 +123,7 @@ export default function Card({ object, id }) {
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
           <Link
-            onClick={handleOnClick}
+            onClick={handelEdit}
             to={{
               pathname: "/edit-card",
               object: object,
@@ -128,7 +140,7 @@ export default function Card({ object, id }) {
         </li>
         <li className="list-inline-item">
           <button
-            onClick={handelRemove}
+            onClick={handleShowModal}
             className="btn btn-danger btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
@@ -138,6 +150,7 @@ export default function Card({ object, id }) {
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </li>
+        <ModaleDelete />
       </ul>
     </li>
   );
