@@ -77,5 +77,6 @@ export const imageSize = async (name, file, dispatch, formState) => {
   } catch (err) {
     console.log(err)
   }
-
+  if (error=="") return true;
+  return false;
 }

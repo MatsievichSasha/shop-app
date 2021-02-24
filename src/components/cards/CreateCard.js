@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useCards } from "../cards/cardsContext/cardsContext"
 import { ACTIONS } from '../cards/cardsContext/cardsReduser'
-import { onInputChange, onInputBlur, validateInput } from '../../lib/formUtils'
+import { onInputChange, onInputBlur } from '../../lib/formUtils'
 import { imageSize } from "../../lib/getImageSize"
 import { isFormValidation } from "../../lib/isFormValidation"
 
 export default function CreateCard() {
 
-  const [showError, setShowError] = useState("")
-  const [showSuccess, setShowSuccess] = useState("")
+  const [showError, setShowError] = useState("");
+  const [showSuccess, setShowSuccess] = useState("");
   const { initialFieldValues, dispatch, formState, sendData } = useCards();
-  const [fileImgValue, setFileImgValue] = useState('')
+/*   const [fileImgValue, setFileImgValue] = useState(''); */
   const handleInputChange = (e) => {
     try {
       if (e.target.name === "file_img") {
         imageSize(e.target.name, e.target.files[0], dispatch, formState)
+       /*  if (imageSize(e.target.name, e.target.files[0], dispatch, formState)) setFileImgValue(e.target.files[0]); */
       } else {
         onInputChange(e.target.name, e.target.value, dispatch, formState);
       }
@@ -52,9 +53,12 @@ export default function CreateCard() {
     } else {
       try {
         await sendData({ name, file_img, description, price, discount, discountDateEnd });
-        setShowSuccess("Товар успешно добавлен")
+        setShowSuccess("Товар успешно добавлен");
+        setTimeout(() => {
+          setShowSuccess("")
+        }, 5000)
         dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
-        setFileImgValue('')
+/*         setFileImgValue(''); */
       } catch {
         setShowError("Произошла ошибка при отправке");
       }
@@ -81,7 +85,6 @@ export default function CreateCard() {
               onSubmit={handleFormSubmit}
               onFocus={handleInputFocus}
               className="form-horizontal"
-              role="form"
             >
               <div className="form-group">
                 <label htmlFor="name" className="col-sm-3 control-label">
@@ -115,19 +118,21 @@ export default function CreateCard() {
                   {formState.file_img.hasError && (
                     <div className="error">{formState.file_img.error}</div>
                   )}
+                  <label className="buttonChooseFile" htmlFor="file_img">Выберите файл</label>
+                  {/* <span className="fileName">{!fileImgValue ? 'Файл не выбран' : fileImgValue.name}</span> */}
                   <input
-                    value={fileImgValue}
                     onChange={handleInputChange}
                     type="file"
                     id="file_img"
                     name="file_img"
                     /* required */
                     accept=".jpg, .jpeg, .png"
+                    hidden
                   />
                 </div>
                 {formState.file_img.value && (
                   <div className="show_file_img">
-                    <img
+                    <img 
                       src={formState.file_img.value}
                       style={{ width: "200px", height: "auto" }}
                     />

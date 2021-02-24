@@ -10,7 +10,6 @@ export default function EditCard(props) {
   const [showError, setShowError] = useState("")
   const [showSuccess, setShowSuccess] = useState("")
   const { dispatch, formState, setCardFB } = useCards();
-
   const handleInputChange = (e) => {
     try {
       if (e.target.name === "file_img") {
@@ -80,7 +79,6 @@ export default function EditCard(props) {
               onSubmit={handleFormSubmit}
               onFocus={handleInputFocus}
               className="form-horizontal"
-              role="form"
             >
               <div className="form-group">
                 <label htmlFor="name" className="col-sm-3 control-label">
@@ -114,6 +112,7 @@ export default function EditCard(props) {
                   {formState.file_img.hasError && (
                     <div className="error">{formState.file_img.error}</div>
                   )}
+                  <label className="buttonChooseFile" htmlFor="file_img">Выберите файл</label>
                   <input
                     onChange={handleInputChange}
                     type="file"
@@ -121,6 +120,7 @@ export default function EditCard(props) {
                     name="file_img"
                     /* required */
                     accept=".jpg, .jpeg, .png"
+                    hidden
                   />
                 </div>
                 {formState.file_img.value && (
