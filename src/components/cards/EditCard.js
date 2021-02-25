@@ -12,9 +12,9 @@ export default function EditCard(props) {
   const { dispatch, formState, setCardFB } = useCards();
   const handleInputChange = (e) => {
     try {
-      if (e.target.name === "file_img") {
+      if (e.target.name === "file_img" && e.target.files[0]) {
         imageSize(e.target.name, e.target.files[0], dispatch, formState)
-      } else {
+      } else if (e.target.name === 'name' || e.target.name === 'description' || e.target.name === 'price' || e.target.name === 'discount' || e.target.name === 'discountDateEnd'){
         onInputChange(e.target.name, e.target.value, dispatch, formState);
       }
     } catch (err) {
@@ -128,6 +128,7 @@ export default function EditCard(props) {
                     <img
                       src={formState.file_img.value}
                       style={{ width: "200px", height: "auto" }}
+                      alt = 'new-product'
                     />
                   </div>
                 )}

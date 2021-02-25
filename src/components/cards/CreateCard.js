@@ -10,13 +10,13 @@ export default function CreateCard() {
   const [showError, setShowError] = useState("");
   const [showSuccess, setShowSuccess] = useState("");
   const { initialFieldValues, dispatch, formState, sendData } = useCards();
-/*   const [fileImgValue, setFileImgValue] = useState(''); */
+  /*   const [fileImgValue, setFileImgValue] = useState(''); */
   const handleInputChange = (e) => {
     try {
-      if (e.target.name === "file_img") {
+      if (e.target.name === "file_img" && e.target.files[0]) {
         imageSize(e.target.name, e.target.files[0], dispatch, formState)
-       /*  if (imageSize(e.target.name, e.target.files[0], dispatch, formState)) setFileImgValue(e.target.files[0]); */
-      } else {
+        /*  if (imageSize(e.target.name, e.target.files[0], dispatch, formState)) setFileImgValue(e.target.files[0]); */
+      } else if (e.target.name === 'name' || e.target.name === 'description' || e.target.name === 'price' || e.target.name === 'discount' || e.target.name === 'discountDateEnd') {
         onInputChange(e.target.name, e.target.value, dispatch, formState);
       }
     } catch (err) {
@@ -58,7 +58,7 @@ export default function CreateCard() {
           setShowSuccess("")
         }, 5000)
         dispatch({ type: ACTIONS.RESET, payload: initialFieldValues })
-/*         setFileImgValue(''); */
+        /*         setFileImgValue(''); */
       } catch {
         setShowError("Произошла ошибка при отправке");
       }
@@ -132,9 +132,10 @@ export default function CreateCard() {
                 </div>
                 {formState.file_img.value && (
                   <div className="show_file_img">
-                    <img 
+                    <img
                       src={formState.file_img.value}
                       style={{ width: "200px", height: "auto" }}
+                      alt = 'new-product'
                     />
                   </div>
                 )}
