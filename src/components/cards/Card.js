@@ -4,7 +4,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useCards } from "../cards/cardsContext/cardsContext";
 import { Link } from "react-router-dom";
 import { ACTIONS } from '../cards/cardsContext/cardsReduser';
-import ModaleDelete from "./ModalDelete";
+import ModalDelete from "./ModalDelete";
 
 
 let styles = {
@@ -61,12 +61,7 @@ export default function Card({ object, id }) {
   const { removeCard, dispatch } = useCards();
   const [discountPrice, setDiscountPrice] = useState("");
   const [discountDateEnd, setDiscountDateEnd] = useState("");
-  const [showModalDelete, setshowModalDelete] = useState(false);
-
-  const handleCloseModal = () => setshowModalDelete(false);
-  const handleShowModal = () => setshowModalDelete(true);
-
-
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   useEffect(() => {
     priceCreat(object);
@@ -89,10 +84,6 @@ export default function Card({ object, id }) {
 
   const handelEdit = () => {
     dispatch({ type: ACTIONS.EDIT_CARD, payload: object })
-  }
-
-  function handelRemove() {
-    return removeCard(id);
   }
 
   return (
@@ -140,7 +131,7 @@ export default function Card({ object, id }) {
         </li>
         <li className="list-inline-item">
           <button
-            onClick={handleShowModal}
+            onClick={() => setShowModalDelete(true)}
             className="btn btn-danger btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
@@ -150,7 +141,7 @@ export default function Card({ object, id }) {
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </li>
-        <ModaleDelete />
+        <ModalDelete show={showModalDelete} setShow={setShowModalDelete} remove={removeCard} id={id}/>
       </ul>
     </li>
   );
