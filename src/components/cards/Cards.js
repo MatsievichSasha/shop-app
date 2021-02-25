@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "./Card";
-import { useCards } from "../../contexts/CardsContext";
+import { useCards } from "../cards/cardsContext/cardsContext";
 
 
 let styles = {

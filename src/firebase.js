@@ -2,13 +2,13 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const dbApp = firebase.initializeApp({
-  apiKey: "AIzaSyB8rziyfFjaTGMgxTTHA25AYFQ196shCvA",
-  authDomain: "test-shop-01.firebaseapp.com",
-  databaseURL: "https://test-shop-01-default-rtdb.firebaseio.com",
-  projectId: "test-shop-01",
-  storageBucket: "test-shop-01.appspot.com",
-  messagingSenderId: "729583535519",
-  appId: "1:729583535519:web:10828ad0bb4cb0120469aa",
+  apiKey: "AIzaSyB_iAyk19pxSMjUuzy4gycOjQaANETeraM",
+  authDomain: "test-shop-2-bbf86.firebaseapp.com",
+  databaseURL: "https://test-shop-2-bbf86-default-rtdb.firebaseio.com",
+  projectId: "test-shop-2-bbf86",
+  storageBucket: "test-shop-2-bbf86.appspot.com",
+  messagingSenderId: "50116861090",
+  appId: "1:50116861090:web:b1104ba471dfcbc85f8bfb"
 });
 
 export const auth = dbApp.auth();

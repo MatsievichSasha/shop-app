@@ -1,5 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer } from "react";
 import dbApp from "firebase";
+import { cardsReduser, ACTIONS } from '../../cards/cardsContext/cardsReduser'
 
 const CardsContext = React.createContext();
 
@@ -8,6 +9,19 @@ export function useCards() {
 }
 
 export default function CardsProvider({ children }) {
+
+  const initialFieldValues = {
+    name: { value: "", touched: false, hasError: true, error: "" },
+    file_img: { value: "", touched: false, hasError: true, error: "" },
+    description: { value: "", touched: false, hasError: false, error: "" },
+    price: { value: "", touched: false, hasError: true, error: "" },
+    discount: { value: "", touched: false, hasError: false, error: "" },
+    discountDateEnd: { value: "", touched: false, hasError: false, error: "" },
+    isFormValid: false,
+  };
+
+  const [formState, dispatch] = useReducer(cardsReduser, initialFieldValues)
+
   const [prodactObjects, setProdactObjects] = useState({});
   const db = dbApp.database();
 
@@ -23,10 +37,10 @@ export default function CardsProvider({ children }) {
       });
   }, []);
 
-  function sendData(values) {
+  function sendData(object) {
     db.ref()
       .child("product")
-      .push(values, (err) => {
+      .push(object, (err) => {
         if (err) {
           console.log(err);
         }
@@ -42,6 +56,9 @@ export default function CardsProvider({ children }) {
   }
 
   const value = {
+    initialFieldValues,
+    formState,
+    dispatch,
     sendData,
     prodactObjects,
     removeCard,

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useCards } from "../../contexts/CardsContext";
+import { useCards } from "../cards/cardsContext/cardsContext";
 import { Link } from "react-router-dom";
+import { ACTIONS } from '../cards/cardsContext/cardsReduser';
+import ModalDelete from "./ModalDelete";
+
 
 let styles = {
   li: {
@@ -47,20 +50,22 @@ let styles = {
   price_current_value: {
     color: "#f84147",
   },
+
+  discountText: {
+    fontSize: "10px",
+    color: "#2e796c",
+  }
 };
 
 export default function Card({ object, id }) {
-  const { removeCard } = useCards();
+  const { removeCard, dispatch } = useCards();
   const [discountPrice, setDiscountPrice] = useState("");
   const [discountDateEnd, setDiscountDateEnd] = useState("");
-
-  function handelRemove() {
-    return removeCard(id);
-  }
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   useEffect(() => {
     priceCreat(object);
-  }, []);
+  });
 
   function priceCreat(object) {
     let msInDay = 86400000;
@@ -77,11 +82,15 @@ export default function Card({ object, id }) {
     }
   }
 
+  const handelEdit = () => {
+    dispatch({ type: ACTIONS.EDIT_CARD, payload: object })
+  }
+
   return (
     <li className="card" style={styles.li}>
       <article style={styles.wrapper} className="wrapper">
         <a className="img__container">
-          <img style={styles.img} src={object.urlImg} alt="" />
+          <img style={styles.img} src={object.file_img} alt={object.name} />
         </a>
         <div className="name">{object.name}</div>
         <div styles={styles.prices}>
@@ -91,12 +100,11 @@ export default function Card({ object, id }) {
           <div style={styles.price_current} className="price_current">
             <span
               style={styles.price_current_value}
-              className="price_current_value"
+              className="discountText"
             >
               {discountPrice ? `${discountPrice}$` : `${object.price}$`}
             </span>
-            <span className="price_valid"></span>
-            {discountDateEnd ? `Цена действительна ${discountDateEnd}д.` : null}
+            {discountDateEnd ? <span><span className="discountText" style={styles.discountText}>До конца акции</span> <span>{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span></span> : null}
           </div>
         </div>
         <div style={styles.description} className="description">
@@ -106,8 +114,9 @@ export default function Card({ object, id }) {
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
           <Link
+            onClick={handelEdit}
             to={{
-              pathname: "/edit-Card",
+              pathname: "/edit-card",
               object: object,
               id: id,
             }}
@@ -122,15 +131,17 @@ export default function Card({ object, id }) {
         </li>
         <li className="list-inline-item">
           <button
+            onClick={() => setShowModalDelete(true)}
             className="btn btn-danger btn-sm rounded-0"
             type="button"
             data-toggle="tooltip"
             data-placement="top"
             title="Delete"
           >
-            <FontAwesomeIcon onClick={handelRemove} icon={faTrash} />
+            <FontAwesomeIcon icon={faTrash} />
           </button>
         </li>
+        <ModalDelete show={showModalDelete} setShow={setShowModalDelete} remove={removeCard} id={id}/>
       </ul>
     </li>
   );

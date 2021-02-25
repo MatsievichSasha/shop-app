@@ -1,16 +1,16 @@
 import React from "react";
-import AuthProvider from "../contexts/AuthContext";
-import SignUp from "./auth/SignUp";
+import AuthProvider from "./contexts/AuthContext";
+import SignUp from "./components/auth/SignUp";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./auth/Login";
-import Privetroute from "./Privetroute";
-import ForgotPassword from "./auth/ForgorPassword";
-import UpdateProfile from "./auth/UpdateProfile";
-import Profile from "./auth/Profile";
-import Cards from "./cards/Cards";
-import CreateCard from "../components/cards/CreateCard";
-import EditCard from "../components/cards/EditCard"
-import CardsProvider from "../contexts/CardsContext";
+import Login from "./components/auth/Login";
+import Privetroute from "./components/Privetroute";
+import ForgotPassword from "./components/auth/ForgorPassword";
+import UpdateProfile from "./components/auth/UpdateProfile";
+import Profile from "./components/auth/Profile";
+import Cards from "./components/cards/Cards";
+import CreateCard from "./components/cards/CreateCard";
+import EditCard from "./components/cards/EditCard"
+import CardsProvider from "../src/components/cards/cardsContext/cardsContext";
 
 function App() {
   return (

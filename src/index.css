@@ -1,15 +1,12 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .card .edit {
@@ -19,4 +16,49 @@ code {
 
 .card:hover ul {
   display: block
+}
+
+.error {
+  margin-top: 0.25rem;
+  color: #f65157;
+}
+
+.form_error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+}
+
+.form_success {
+  color: #27531f;
+  background-color: #78f5ac;
+  border-color: #30df47;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+}
+
+.show_file_img{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonChooseFile{
+  background-color: rgb(75, 76, 77);
+  color: white;
+  padding: 0.3rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.fileName{
+  margin-left: 0.3rem;
+  font-family: sans-serif;
 }
