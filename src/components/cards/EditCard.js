@@ -52,7 +52,8 @@ export default function EditCard(props) {
     } else {
       try {
         await setCardFB({ name, file_img, description, price, discount, discountDateEnd }, props.location.id);
-        setShowSuccess("Изменения добавлены")
+        setShowSuccess("Изменения добавлены");
+        window.scrollTo(0,0);
       } catch {
         setShowError("Произошла ошибка при отправке");
       }

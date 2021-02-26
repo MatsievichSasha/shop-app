@@ -54,6 +54,7 @@ export default function CreateCard() {
       try {
         await sendData({ name, file_img, description, price, discount, discountDateEnd });
         setShowSuccess("Товар успешно добавлен");
+        window.scrollTo(0,0);
         setTimeout(() => {
           setShowSuccess("")
         }, 5000)
