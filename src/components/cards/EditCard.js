@@ -67,25 +67,26 @@ export default function EditCard(props) {
   return (
     <>
       <div className="container">
-        <section className="panel panel-default">
-          <div className="panel-heading">
-            <h3 className="panel-title col-sm-9" style={{ textAlign: "center" }}>Редактирование товара</h3>
+        <div className="row justify-content-center">
+          <div className="form-heading col-sm-9">
+            <h3 className="form-title" style={{ textAlign: "center" }}>Редактирование товара</h3>
             {showError && !formState.isFormValid && (
               <div className="form_error">{showError}</div>)}
             {showSuccess && (
               <div className="form_success">{showSuccess}</div>)}
           </div>
-          <div className="panel-body">
+          </div>
+          <div className="row justify-content-center">
             <form
               onSubmit={handleFormSubmit}
               onFocus={handleInputFocus}
-              className="form-horizontal"
+              className="form-horizontal col-sm-9"
             >
               <div className="form-group">
                 <label htmlFor="name" className="col-sm-3 control-label">
                   Заголовок
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.name.touched && formState.name.hasError && (
                     <div className="error">{formState.name.error}</div>
                   )}
@@ -106,10 +107,10 @@ export default function EditCard(props) {
                 </div>
               </div>
               <div className="form-group">
-                <label className="control-label col-sm-9" htmlFor="file_img">
+                <label className="control-label col" htmlFor="file_img">
                   Изображение (min 200px, max 4000px, .jpg, .jpeg,.png):
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.file_img.hasError && (
                     <div className="error">{formState.file_img.error}</div>
                   )}
@@ -140,7 +141,7 @@ export default function EditCard(props) {
                 <label htmlFor="description" className="col-sm-3 control-label">
                   Описание
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.description.touched && formState.description.hasError && (
                     <div className="error">{formState.description.error}</div>
                   )}
@@ -160,7 +161,7 @@ export default function EditCard(props) {
                 <label htmlFor="price" className="col-sm-3 control-label">
                   Цена, $
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.price.touched && formState.price.hasError && (
                     <div className="error">{formState.price.error}</div>
                   )}
@@ -184,7 +185,7 @@ export default function EditCard(props) {
                 <label htmlFor="discount" className="col-sm-3 control-label">
                   Процент скидки, %
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.discount.touched && formState.discount.value && (
                     <div className="error">{formState.discount.error}</div>
                   )}
@@ -211,7 +212,7 @@ export default function EditCard(props) {
                 >
                   Дата окончания скидки:
                 </label>
-                <div className="col-sm-9">
+                <div className="col">
                   {formState.discountDateEnd.error && (
                     <div className="error">
                       {formState.discountDateEnd.error}
@@ -242,7 +243,6 @@ export default function EditCard(props) {
               </div>
             </form>
           </div>
-        </section>
       </div>
     </>
   );
