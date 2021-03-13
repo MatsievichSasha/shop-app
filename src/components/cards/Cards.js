@@ -5,9 +5,7 @@ import { useCards } from "../cards/cardsContext/cardsContext";
 
 let styles = {
   ul: {
-    display: "flex",
-    width: "100%",
-    flexWrap: "wrap",
+    padding: "41px",
   },
 };
 
@@ -16,15 +14,18 @@ export default function Cards() {
 
   return (
     <>
-      <ul style={styles.ul}>
-        {Object.keys(prodactObjects).map((id) => {
-          return <Card
-            object={prodactObjects[id]}
-            key={id}
-            id={id}>
-          </Card>;
-        })}
-      </ul>
+      <div className="container">
+        <div className="row row-container">
+          {Object.keys(prodactObjects).map((id) => {
+            return <Card
+              object={prodactObjects[id]}
+              key={id}
+              id={id}>
+            </Card>;
+          })}
+        </div>
+      </div>
+
     </>
   );
 }

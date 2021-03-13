@@ -12,14 +12,14 @@ export const Navbar = () => {
 
   return (
     <nav>
-      <div className="nav nav-tabs" id="nav-tab" role="tablist">
-        <Link to="/" onClick={stateReset} className="nav-link" >
+      <div className="nav justify-content-center navbar-background fixed-top" id="nav-tab" role="tablist">
+        <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
           Все товары
         </Link>
-        <Link to="/create-card" onClick={stateReset} className="nav-link" >
+        <Link to="/create-card" onClick={stateReset} className="nav-link nav-link-color" >
           Добавить товар
         </Link>
-        <Link to="/profile" onClick={stateReset} className="nav-link" >
+        <Link to="/profile" onClick={stateReset} className="nav-link nav-link-color" >
           Profile
         </Link>
       </div>

@@ -5,8 +5,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+.navbar-background{
+  background-color: rgb(22, 12, 13);
+}
+
+.nav-link-color{
+  color: white;
+}
+
+.row-container{
+  padding-top: 41px;
 }
 
 .card .edit {

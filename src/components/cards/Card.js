@@ -87,30 +87,17 @@ export default function Card({ object, id }) {
   }
 
   return (
-    <li className="card" style={styles.li}>
-      <article style={styles.wrapper} className="wrapper">
-        <a className="img__container">
-          <img style={styles.img} src={object.file_img} alt={object.name} />
-        </a>
-        <div className="name">{object.name}</div>
-        <div styles={styles.prices}>
-          <div style={styles.price_old} className="price_old">
-            {discountPrice ? `${object.price}$` : null}
-          </div>
-          <div style={styles.price_current} className="price_current">
-            <span
-              style={styles.price_current_value}
-              className="discountText"
-            >
-              {discountPrice ? `${discountPrice}$` : `${object.price}$`}
-            </span>
-            {discountDateEnd ? <span><span className="discountText" style={styles.discountText}>До конца акции</span> <span>{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span></span> : null}
-          </div>
-        </div>
-        <div style={styles.description} className="description">
+    <div className="card col-12 col-sm-6 col-md-3" style={{width: '40rem'}}>
+      <img className="card-img-top" src={object.file_img} alt={object.name} />
+      <div className="card-body">
+        <h5 className="card-title">{object.name}</h5>
+        <p className="description" style={styles.description}>
           {object.description}
-        </div>
-      </article>
+        </p>
+      </div>
+
+
+
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
           <Link
@@ -141,8 +128,8 @@ export default function Card({ object, id }) {
             <FontAwesomeIcon icon={faTrash} />
           </button>
         </li>
-        <ModalDelete show={showModalDelete} setShow={setShowModalDelete} remove={removeCard} id={id}/>
+        <ModalDelete show={showModalDelete} setShow={setShowModalDelete} remove={removeCard} id={id} />
       </ul>
-    </li>
+    </div>
   );
 }
