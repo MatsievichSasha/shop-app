@@ -87,10 +87,24 @@ export default function Card({ object, id }) {
   }
 
   return (
-    <div className="card col-12 col-sm-6 col-md-3" style={{width: '40rem'}}>
+    <div className="card col-12 col-sm-6 col-md-3" style={{ width: '40rem' }}>
       <img className="card-img-top" src={object.file_img} alt={object.name} />
       <div className="card-body">
         <h5 className="card-title">{object.name}</h5>
+        <div styles={styles.prices}>
+          <div style={styles.price_old} className="price_old">
+            {discountPrice ? `${object.price}$` : null}
+          </div>
+          <div style={styles.price_current} className="price_current">
+            <span
+              style={styles.price_current_value}
+              className="discountText"
+            >
+              {discountPrice ? `${discountPrice}$` : `${object.price}$`}
+            </span>
+            {discountDateEnd ? <span><span className="discountText" style={styles.discountText}>До конца акции</span> <span>{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span></span> : null}
+          </div>
+        </div>
         <p className="description" style={styles.description}>
           {object.description}
         </p>
