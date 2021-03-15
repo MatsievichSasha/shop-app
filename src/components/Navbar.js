@@ -11,9 +11,12 @@ export const Navbar = () => {
   }
 
   return (
-    <nav>
-      
-      <div className="nav justify-content-center navbar-background fixed-top" id="nav-tab" role="tablist">
+    <nav className="navbar navbar-expand-sm">
+      <a class="navbar-brand" href="#">Панель навигации</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключатель навигации">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div className="nav justify-content-center navbar-background fixed-top collapse navbar-collapse" id="navbarNav">
         <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
           Все товары
         </Link>
