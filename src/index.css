@@ -5,26 +5,46 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.navbar-background{
+.navbar-background {
   background-color: rgb(22, 12, 13);
 }
 
-.nav-link-color{
+.nav-link-color {
   color: white;
 }
 
-.row-container{
+.row-container {
   padding-top: 41px;
 }
 
-.card-a-image{
+.card-a-image {
   height: 10rem;
 }
 
-.card-img-size{
-
+.card-img-size {
   height: 100%;
   object-fit: contain;
+}
+
+.card-price-value {
+  padding-left: 15px;
+}
+
+.card-price-value-old {
+  font-size: 0.8rem;
+  height: 1.2rem;
+}
+
+.card-price-value-current {
+  font-size: 1.2rem;
+}
+
+.card-price-info {
+  padding-right: 15px;
+}
+
+.card-price-info-text {
+  font-size: 0.8rem;
 }
 
 .card .edit {
@@ -32,10 +52,22 @@ body {
   position: absolute;
 }
 
-.card-title-wrapper{
+.card-title-wrapper {
   height: 5rem;
   border-bottom: 1px rgb(212, 211, 209) solid;
 }
+
+.card-title-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow-y: hidden;
+}
+
+.card-description {
+  text-align: justify;
+}
+
 .card:hover ul {
   display: block
 }
@@ -65,12 +97,12 @@ body {
   margin: 1rem 0;
 }
 
-.show_file_img{
+.show_file_img {
   display: flex;
   justify-content: center;
 }
 
-.buttonChooseFile{
+.buttonChooseFile {
   background-color: rgb(75, 76, 77);
   color: white;
   padding: 0.3rem;
@@ -80,7 +112,7 @@ body {
   margin-top: 1rem;
 }
 
-.fileName{
+.fileName {
   margin-left: 0.3rem;
   font-family: sans-serif;
 }

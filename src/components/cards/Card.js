@@ -11,22 +11,6 @@ let styles = {
   li: {
     width: "250px",
     listStyleType: "none",
-  },
-
-  price_old: {
-    height: "18px",
-    fontSize: "14px",
-    color: "#a6a5a5",
-    textDecoration: "line-through",
-  },
-
-  price_current_value: {
-    color: "#f84147",
-  },
-
-  discountText: {
-    fontSize: "10px",
-    color: "#2e796c",
   }
 };
 
@@ -66,35 +50,32 @@ export default function Card({ object, id }) {
       </a>
       <div className="card-body card-body-size">
         <div className="card-title-wrapper">
-          <h5 className="card-title ">{object.name}</h5>
+          <h5 className="card-title text-break overflow-hidden card-title-text">{object.name}</h5>
         </div>
-        <div className="row price justify-content-between">
-          <div className="d-flex flex-column align-self-baseline">
-            <div className="" style={styles.price_old} stile={{ height: '1rem' }}>
-              <span>{discountPrice ? `${object.price}$` : null}</span>
+        <div className="card-price row justify-content-between">
+          <div className="d-flex flex-column align-items-start align-content-between card-price-value">
+            <div className="text-muted card-price-value-old">
+              <span><s>{discountPrice ? `${object.price}$` : null}</s></span>
             </div>
-            <div className="">
+            <div className="card-price-value-current text-success">
               <span>{discountPrice ? `${discountPrice}$` : `${object.price}$`}</span>
             </div>
           </div>
           {discountDateEnd ?
-            <div className="d-flex flex-column align-self-baseline">
-              <div className="" style={styles.price_current} className="price_current">
-                <span className="discountText" style={styles.discountText}>До конца акции</span>
-              </div>
+            <div className="d-flex flex-column align-items-end align-content-between card-price-info">
               <div className="">
-                <span className="badge bg-warning text-dark">{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span>
+                <span className="card-price-info-text text-info">До конца акции</span>
+              </div>
+              <div className="card-price-info-text text-info">
+                <span className="badge bg-warning text-dark">{discountDateEnd}</span > <span className="discountText">дней</span>
               </div>
             </div>
             : null}
         </div>
-        <p className="description" style={styles.description}>
+        <p className="card-description">
           {object.description}
         </p>
       </div>
-
-
-
       <ul className="edit list-inline m-0">
         <li className="list-inline-item">
           <Link
