@@ -12,6 +12,7 @@ export const Navbar = () => {
 
   return (
     <nav>
+      
       <div className="nav justify-content-center navbar-background fixed-top" id="nav-tab" role="tablist">
         <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
           Все товары

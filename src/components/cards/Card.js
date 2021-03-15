@@ -52,8 +52,8 @@ export default function Card({ object, id }) {
         <div className="card-title-wrapper">
           <h5 className="card-title text-break overflow-hidden card-title-text">{object.name}</h5>
         </div>
-        <div className="card-price row justify-content-between">
-          <div className="d-flex flex-column align-items-start align-content-between card-price-value">
+        <div className="card-price d-flex flex-column">
+          <div className="d-flex flex-column card-price-value">
             <div className="text-muted card-price-value-old">
               <span><s>{discountPrice ? `${object.price}$` : null}</s></span>
             </div>
@@ -62,12 +62,12 @@ export default function Card({ object, id }) {
             </div>
           </div>
           {discountDateEnd ?
-            <div className="d-flex flex-column align-items-end align-content-between card-price-info">
-              <div className="">
-                <span className="card-price-info-text text-info">До конца акции</span>
-              </div>
+            <div className="d-flex flex-row card-price-info justify-content-end align-items-baseline">
               <div className="card-price-info-text text-info">
-                <span className="badge bg-warning text-dark">{discountDateEnd}</span > <span className="discountText">дней</span>
+                <span className="">До конца акции&nbsp;</span>
+              </div>
+              <div className="d-flex flex-row card-price-info-text text-info align-items-baseline">
+                <h5><span className="badge bg-warning text-dark">{discountDateEnd}</span ></h5><span className="discountText">&nbsp;дней</span>
               </div>
             </div>
             : null}

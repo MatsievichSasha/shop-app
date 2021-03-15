@@ -26,8 +26,8 @@ body {
   object-fit: contain;
 }
 
-.card-price-value {
-  padding-left: 15px;
+.card-price {
+  height: 4.45rem;
 }
 
 .card-price-value-old {
@@ -37,10 +37,6 @@ body {
 
 .card-price-value-current {
   font-size: 1.2rem;
-}
-
-.card-price-info {
-  padding-right: 15px;
 }
 
 .card-price-info-text {
