@@ -17,11 +17,25 @@ body {
   padding-top: 41px;
 }
 
+.card-a-image{
+  height: 10rem;
+}
+
+.card-img-size{
+
+  height: 100%;
+  object-fit: contain;
+}
+
 .card .edit {
   display: none;
   position: absolute;
 }
 
+.card-title-wrapper{
+  height: 5rem;
+  border-bottom: 1px rgb(212, 211, 209) solid;
+}
 .card:hover ul {
   display: block
 }

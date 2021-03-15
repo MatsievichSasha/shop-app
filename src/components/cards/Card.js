@@ -13,38 +13,11 @@ let styles = {
     listStyleType: "none",
   },
 
-  wrapper: {
-    padding: "0.5rem",
-  },
-
-  img: {
-    width: "100%",
-    height: "160px",
-    objectFit: "contein",
-    display: "block",
-    objectPosition: "50% 0",
-  },
-
-  description: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-
-  prices: {
-    height: "55px",
-  },
-
   price_old: {
     height: "18px",
     fontSize: "14px",
     color: "#a6a5a5",
     textDecoration: "line-through",
-  },
-
-  price_current: {
-    display: "flex",
-    justifyContent: "space-between",
-    color: "rgb(121, 187, 23)",
   },
 
   price_current_value: {
@@ -87,23 +60,33 @@ export default function Card({ object, id }) {
   }
 
   return (
-    <div className="card col-12 col-sm-6 col-md-3" style={{ width: '40rem' }}>
-      <img className="card-img-top" src={object.file_img} alt={object.name} />
-      <div className="card-body">
-        <h5 className="card-title">{object.name}</h5>
-        <div styles={styles.prices}>
-          <div style={styles.price_old} className="price_old">
-            {discountPrice ? `${object.price}$` : null}
+    <div className="card col-12 col-sm-6 col-md-4 col-lg-3">
+      <a className="card-a-image">
+        <img className="card-img-top card-img-size" src={object.file_img} alt={object.name} />
+      </a>
+      <div className="card-body card-body-size">
+        <div className="card-title-wrapper">
+          <h5 className="card-title ">{object.name}</h5>
+        </div>
+        <div className="row price justify-content-between">
+          <div className="d-flex flex-column align-self-baseline">
+            <div className="" style={styles.price_old} stile={{ height: '1rem' }}>
+              <span>{discountPrice ? `${object.price}$` : null}</span>
+            </div>
+            <div className="">
+              <span>{discountPrice ? `${discountPrice}$` : `${object.price}$`}</span>
+            </div>
           </div>
-          <div style={styles.price_current} className="price_current">
-            <span
-              style={styles.price_current_value}
-              className="discountText"
-            >
-              {discountPrice ? `${discountPrice}$` : `${object.price}$`}
-            </span>
-            {discountDateEnd ? <span><span className="discountText" style={styles.discountText}>До конца акции</span> <span>{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span></span> : null}
-          </div>
+          {discountDateEnd ?
+            <div className="d-flex flex-column align-self-baseline">
+              <div className="" style={styles.price_current} className="price_current">
+                <span className="discountText" style={styles.discountText}>До конца акции</span>
+              </div>
+              <div className="">
+                <span className="badge bg-warning text-dark">{discountDateEnd}</span > <span className="discountText" style={styles.discountText}>дней</span>
+              </div>
+            </div>
+            : null}
         </div>
         <p className="description" style={styles.description}>
           {object.description}
