@@ -13,7 +13,7 @@ export const Navbar = () => {
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-sm fixed-top">
       <div className="container">
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse row justify-content-center navbar-ul-wrapper" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item active">
               <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
@@ -33,7 +33,6 @@ export const Navbar = () => {
           </ul>
         </div>
       </div>
-
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>

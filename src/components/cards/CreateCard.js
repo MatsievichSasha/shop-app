@@ -72,7 +72,7 @@ export default function CreateCard() {
 
   return (
     <>
-      <div className="container">
+      <div className="container create-card">
         <div className="row justify-content-center">
           <div className="form-heading col-sm-9">
             <h3 className="form-title" style={{ textAlign: "center" }}>Добавление товара</h3>

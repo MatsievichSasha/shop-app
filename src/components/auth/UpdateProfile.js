@@ -53,7 +53,7 @@ export default function UpdateProfile() {
 
   return (
     <>
-      <div style={styles.wrapper}>
+      <div className="update-profile" style={styles.wrapper}>
         <div style={styles.loginForm}>
           <form onSubmit={handleSubmit}>
             <h2 className="text-center">Update Profile</h2>

@@ -19,17 +19,26 @@ export default function Profile() {
   }
   return (
     <>
-      <div>
-        <h2 className="text-center">Profile</h2>
-        {error && <Alert value={{
-          text: error,
-          type: 'danger'
-        }}></Alert>}
-        <strong>Email:</strong>{currentUser.email}
-        <Link to="/update-profile" className="btn btn-primary w-100 mt-3">Update profile</Link>
-      </div>
-      <div>
-        <button className="btn btn-link" onClick={handleLogout}>Log out</button>
+      <div className="container">
+        <div className="row profile justify-content-center text-center">
+          <div className="col-sm-12 col-md-12">
+            <h2 className="text-center">Profile</h2>
+            {error && <Alert value={{
+              text: error,
+              type: 'danger'
+            }}></Alert>}
+          </div>
+          <div className="col-sm-12 col-md-12">
+            <strong>Email:&nbsp;</strong><span>{currentUser.email}</span>
+          </div>
+          <div className="col-sm-12 col-md-12 p-4">
+            <Link to="/update-profile" className="btn btn-primary">Update profile</Link>
+          </div>
+          <div className="col-sm-12 col-md-12">
+            <button className="btn btn-sm btn-link" onClick={handleLogout}>Log out</button>
+          </div>
+        </div>
+
       </div>
     </>
   )
