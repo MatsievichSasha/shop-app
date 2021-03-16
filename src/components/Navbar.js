@@ -11,22 +11,32 @@ export const Navbar = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand-sm">
-      <a class="navbar-brand" href="#">Панель навигации</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключатель навигации">
+    <nav className="navbar navbar-dark bg-dark navbar-expand-sm fixed-top">
+      <div className="container">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
+                Все товары
+              </Link>
+            </li>
+            <li class="nav-item active">
+              <Link to="/create-card" onClick={stateReset} className="nav-link nav-link-color" >
+                Добавить товар
+              </Link>
+            </li>
+            <li class="nav-item active">
+              <Link to="/profile" onClick={stateReset} className="nav-link nav-link-color" >
+                Profile
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div className="nav justify-content-center navbar-background fixed-top collapse navbar-collapse" id="navbarNav">
-        <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
-          Все товары
-        </Link>
-        <Link to="/create-card" onClick={stateReset} className="nav-link nav-link-color" >
-          Добавить товар
-        </Link>
-        <Link to="/profile" onClick={stateReset} className="nav-link nav-link-color" >
-          Profile
-        </Link>
-      </div>
     </nav>
   );
 }
