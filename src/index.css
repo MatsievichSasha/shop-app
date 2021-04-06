@@ -20,7 +20,7 @@ body {
   color: white;
 }
 
-.row-container, .profile, .create-card, .update-profile {
+.row-container, .profile, .create-card, .update-profile, .edite-card {
   padding-top: 3.5rem;
 }
 

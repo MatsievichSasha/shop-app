@@ -14,18 +14,18 @@ export const Navbar = () => {
     <nav className="navbar navbar-dark bg-dark navbar-expand-sm fixed-top">
       <div className="container">
         <div className="collapse navbar-collapse row justify-content-center navbar-ul-wrapper" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
+          <ul className="navbar-nav">
+            <li className="nav-item active">
               <Link to="/" onClick={stateReset} className="nav-link nav-link-color" >
                 Все товары
               </Link>
             </li>
-            <li class="nav-item active">
+            <li className="nav-item active">
               <Link to="/create-card" onClick={stateReset} className="nav-link nav-link-color" >
                 Добавить товар
               </Link>
             </li>
-            <li class="nav-item active">
+            <li className="nav-item active">
               <Link to="/profile" onClick={stateReset} className="nav-link nav-link-color" >
                 Profile
               </Link>

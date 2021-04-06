@@ -69,7 +69,7 @@ export default function EditCard(props) {
 
   return (
     <>
-      <div className="container">
+      <div className="container edite-card">
         <div className="row justify-content-center">
           <div className="form-heading col-sm-9">
             <h3 className="form-title" style={{ textAlign: "center" }}>Редактирование товара</h3>
